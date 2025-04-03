@@ -1,0 +1,178 @@
+//package org.example;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+public class Flight {
+    private String flightNumber;
+    private int capacity;
+    private int bookedSeats;
+    private String source;
+    private String destination;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
+    private double baseFare;
+    private ArrayList<Seat> seats;
+
+    public Flight(String flightNumber, int capacity, int bookedSeats, String source, String destination, LocalDateTime departureTime, LocalDateTime arrivalTime ,double fare) {
+        this.flightNumber = flightNumber;
+        this.capacity = capacity;
+        this.bookedSeats = bookedSeats;
+        this.source = source;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.baseFare = fare;
+        this.seats = new ArrayList<>();
+        for (int i = 1; i <= capacity; i++) {
+            seats.add(new Seat("S" + i));
+        }
+    }
+
+    public Flight(String flightNumber, int capacity, String source, String destination, LocalDateTime departureTime, LocalDateTime arrivalTime, double fare) {
+        this(flightNumber, capacity, 0, source, destination, departureTime, arrivalTime, fare);
+    }
+
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        if (capacity >= bookedSeats) {
+            this.capacity = capacity;
+        } else {
+            System.out.println("Error: Capacity cannot be less than booked seats.");
+        }
+    }
+
+    public int getBookedSeats() {
+        return bookedSeats;
+    }
+
+    public void setBookedSeats(int bookedSeats) {
+        if (bookedSeats <= capacity) {
+            this.bookedSeats = bookedSeats;
+        } else {
+            System.out.println("Error: Booked seats cannot be more than capacity.");
+        }
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalDateTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public double getBaseFare() {
+        return baseFare;
+    }
+
+    public void setTicketPrice(double fare) {
+        this.baseFare = fare;
+    }
+
+    public ArrayList<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(ArrayList<Seat> seats) {
+        this.seats = seats;
+    }
+
+    public boolean UpdateAvailableSeats(Seat seat) {
+        if (seats.contains(seat)) {
+            seats.remove(seat);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean Delay(LocalDateTime newDepartureTime, LocalDateTime newArrivalTime) {
+        if (newDepartureTime.isAfter(departureTime) && newArrivalTime.isAfter(arrivalTime)) {
+            departureTime = newDepartureTime;
+            arrivalTime = newArrivalTime;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean bookSeat() {
+        if (bookedSeats < capacity) {
+            bookedSeats++;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean cancelBooking() {
+        if (bookedSeats > 0) {
+            bookedSeats--;
+            seats.add(new Seat("S" + (bookedSeats + 1)));
+            return true;
+        }
+        return false;
+    }
+
+    public double calculateFare(String seatType) {
+        double finalFare = baseFare;
+
+        // Adjust fare based on seat type
+        switch (seatType.toLowerCase()) {
+            case "business":
+                finalFare *= 1.5; // 50% increase for business class
+                break;
+            case "first":
+                finalFare *= 2.0; // 100% increase for first class
+                break;
+            case "economy":
+            default:
+                finalFare *= 1.0; // No change for economy class
+                break;
+        }
+        return finalFare;
+    }
+
+    public void displayFlightDetails() {
+        System.out.println("Flight Number: " + flightNumber);
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Booked Seats: " + bookedSeats);
+        System.out.println("Source: " + source);
+        System.out.println("Destination: " + destination);
+        System.out.println("Departure Time: " + departureTime);
+        System.out.println("Arrival Time: " + arrivalTime);
+        System.out.println("baseFare: " + baseFare);
+    }
+
+}
