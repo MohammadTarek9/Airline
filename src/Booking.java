@@ -1,10 +1,14 @@
 //package org.example;
+
+import java.util.ArrayList;
+
 public class Booking {
     private String bookingID;
     private Flight flight;
     private Passenger passenger;
     private Boolean isConfirmed;
     private String seatType;
+    private String seatID;
 
     public Booking(String bookingID, Flight flight, Passenger passenger, String seatType) {
         this.bookingID = bookingID;
@@ -19,6 +23,14 @@ public class Booking {
 
     public void setBookingID(String bookingID) {
         this.bookingID = bookingID;
+    }
+
+    public String getSeatID() {
+        return seatID;
+    }
+
+    public void setSeatID(String seatID) {
+        this.seatID = seatID;
     }
 
     public Flight getFlight() {
@@ -62,11 +74,26 @@ public class Booking {
         return false;
     }
 
-    public boolean cancelBooking() {
-        if (isConfirmed && flight.cancelBooking()) {
-            this.isConfirmed = false;
-            return true;
-        }
-        return false;
-    }
+//     public String cancelBooking() {
+//        boolean deleted = BookingsModel.deleteBooking(this.bookingID);
+//        if (!deleted) {
+//            return "Failed to cancel booking!";
+//        }
+
+//        boolean updated = FlightsModel.decrementBookedSeats(flight.getFlightNumber());
+//        if (!updated) {
+//            return "Failed to update flight booking count!";
+//        }
+       
+//        ArrayList<Seat> seats = SeatModel.getAllSeats(flight.getFlightNumber());
+//        for (Seat seat: seats){
+//             if(seat.getSeat_id().equals())
+//        }
+
+//        return "success";
+//    }
+        
+
+
+    
 }

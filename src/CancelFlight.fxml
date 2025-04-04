@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CancelFlightController">
+    <children>
+        <ImageView fitHeight="815.0" fitWidth="1036.0" layoutX="114.0" layoutY="-5.0" opacity="0.39">
+            <image>
+                <Image url="@pngimg.com_-_world_map_PNG2.png" />
+            </image>
+        </ImageView>
+        <HBox prefHeight="798.0" prefWidth="106.0" style="-fx-background-color: #1A3E76;">
+            <children>
+                <VBox prefHeight="798.0" prefWidth="101.0">
+                    <children>
+                        <ImageView fitHeight="101.0" fitWidth="103.0" opacity="0.3" preserveRatio="true" translateX="6.0" translateY="27.0">
+                            <image>
+                                <Image url="@AccountLogo.png" />
+                            </image>
+                        </ImageView>
+                        <Button fx:id="ManageAccBtn" mnemonicParsing="false" onAction="#GoToAccount" opacity="0.3" style="-fx-background-color: #1A3E76;" text="Account" textFill="WHITE" translateX="5.0" translateY="32.0">
+                            <font>
+                                <Font name="System Bold Italic" size="20.0" />
+                            </font>
+                        </Button>
+                        <ImageView fitHeight="120.0" fitWidth="111.0" opacity="0.3" translateX="3.0" translateY="48.0">
+                            <image>
+                                <Image url="@BookFlight.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="89.0" fitWidth="97.0" preserveRatio="true" translateX="8.0" translateY="158.0">
+                            <image>
+                                <Image url="@CancelBooking.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="106.0" fitWidth="116.0" opacity="0.3" translateY="252.0">
+                            <image>
+                                <Image url="@Updates.png" />
+                            </image>
+                        </ImageView>
+                        <Button fx:id="BookFlightBtn" layoutX="10.0" layoutY="115.0" mnemonicParsing="false" onAction="#GoToBooking" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Book Flight" textAlignment="CENTER" textFill="WHITE" translateX="-1.0" translateY="-147.0" wrapText="true">
+                            <font>
+                                <Font name="System Bold Italic" size="20.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="CancelFlight" layoutX="10.0" layoutY="498.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Cancel Flight" textAlignment="CENTER" textFill="WHITE" translateY="-16.0" wrapText="true">
+                            <font>
+                                <Font name="System Bold Italic" size="20.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="UpdatesBtn" layoutX="10.0" layoutY="545.0" mnemonicParsing="false" onAction="#GoToUpdates" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Updates" textAlignment="CENTER" textFill="WHITE" translateY="100.0" wrapText="true">
+                            <font>
+                                <Font name="System Bold Italic" size="20.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+      <Label layoutX="310.0" layoutY="196.0" prefHeight="73.0" prefWidth="428.0" text="Your Booked Flights" translateY="-22.0">
+         <font>
+            <Font name="Arial Bold Italic" size="42.0" />
+         </font>
+      </Label>
+      <Button fx:id="CancelFlightBtn" layoutX="985.0" layoutY="701.0" mnemonicParsing="false" onAction="#HandleCancellation" prefHeight="74.0" prefWidth="143.0" style="-fx-background-color: #1A3E76;" text="Cancel" textFill="WHITE" translateY="-15.0">
+         <font>
+            <Font name="Arial Bold Italic" size="29.0" />
+         </font>
+      </Button>
+      <TableView fx:id="flights" layoutX="220.0" layoutY="273.0" prefHeight="490.0" prefWidth="649.0" style="-fx-background-color: transparent;" translateY="-25.0" />
+      <TextField fx:id="FlightNumField" layoutX="924.0" layoutY="595.0" prefHeight="62.0" prefWidth="207.0" />
+      <Label layoutX="911.0" layoutY="520.0" prefHeight="74.0" prefWidth="238.0" text="Enter flight number">
+         <font>
+            <Font name="Arial Bold Italic" size="24.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

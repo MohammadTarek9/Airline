@@ -48,4 +48,37 @@ public class FlightsModel {
         }
         return flights;
     }
+
+    public static Flight getFlightDetails(String flightNumber) {
+        String query = "SELECT * FROM flight WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int capacity = resultSet.getInt("capacity");
+                int bookedSeats = resultSet.getInt("bookedSeats");
+                String source = resultSet.getString("source");
+                String destination = resultSet.getString("destination");
+                String departureTime = resultSet.getString("departureTime");
+                String arrivalTime = resultSet.getString("arrivalTime");
+                double fare = resultSet.getDouble("baseFare");
+                return new Flight(flightNumber, capacity, bookedSeats, source, destination, departureTime, arrivalTime, fare);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean decrementBookedSeats(String flightNumber) {
+        String query = "UPDATE flight SET bookedSeats = bookedSeats - 1 WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

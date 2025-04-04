@@ -107,7 +107,6 @@ public class BookFlightsController {
 
     }
 
-
     @FXML
     void HandleBooking(ActionEvent event) {
         String flightNumber = flightNumberBtn.getText();

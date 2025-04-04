@@ -1,4 +1,5 @@
 //package org.example;
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -105,6 +106,12 @@ public class Passenger {
         return filteredFlights;
     }
 
+    public ArrayList<Booking> fetchBookings() {
+        ArrayList<Booking> allBookings = new ArrayList<>();
+        allBookings = BookingsModel.getAllBookings(this.email);
+        return allBookings;
+    }
+
     public boolean BookFlight(String bookingID, Flight flight, String seatType) {
         Booking booking = new Booking(bookingID, flight, this, seatType);
         if (booking.confirmBooking()) {
@@ -114,13 +121,30 @@ public class Passenger {
         return false;
     }
 
-    public boolean cancelBooking(Booking booking) {
-        if (bookings.contains(booking) && booking.cancelBooking()) {
-            bookings.remove(booking);
-            return true;
-        }
-        return false;
-    }
+    // public String cancelBooking(Flight flight) {
+    //     String result = "success";
+    //     if(flight == null) {
+    //         result = "Flight not found!";
+    //         return result;
+    //     }
+    //     ArrayList<Booking> allBookings = BookingsModel.findAllBookings();
+    //     Booking booking = null;
+    //     for (Booking b : allBookings) {
+    //         if (b.getFlight().getFlightNumber().equals(flight.getFlightNumber()) && b.getPassenger().getEmail().equals(this.email)) {
+    //             booking = b;
+    //             ArrayList<Seat> seats = booking.getFlight().getSeats();
+
+    //             break;
+    //         }
+    //     }
+    //     if (booking == null) {
+    //         result = "Booking not found!";
+    //         return result;
+    //     }
+    //     result = booking.cancelBooking();
+        
+
+    // }
 
     public static String createAccount(String email, String password, String firstName, String lastName, String phone, String ageStr) {
         String result = "success";
