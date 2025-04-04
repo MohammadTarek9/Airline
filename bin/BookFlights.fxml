@@ -98,16 +98,26 @@
                 <Font name="Arial Bold Italic" size="25.0" />
             </font>
         </Label>
-        <Button fx:id="BookBtn" layoutX="1000.0" layoutY="698.0" mnemonicParsing="false" onAction="#HandleBooking" prefHeight="70.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Book" textFill="WHITE">
+        <Button fx:id="BookBtn" layoutX="993.0" layoutY="628.0" mnemonicParsing="false" onAction="#HandleBooking" prefHeight="70.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Book" textFill="WHITE">
             <font>
                 <Font name="Arial Bold Italic" size="29.0" />
             </font>
         </Button>
-        <TableView fx:id="flights" layoutX="263.0" layoutY="429.0" prefHeight="357.0" prefWidth="718.0" style="-fx-background-color: transparent;" />
+        <TableView fx:id="flights" layoutX="150.0" layoutY="417.0" prefHeight="357.0" prefWidth="718.0" style="-fx-background-color: transparent;" />
       <Button fx:id="SearchBtn" layoutX="955.0" layoutY="291.0" mnemonicParsing="false" onAction="#HandleSearch" prefHeight="70.0" prefWidth="142.0" style="-fx-background-color: #1A3E76;" text="Search" textFill="WHITE">
          <font>
             <Font name="Arial Bold Italic" size="29.0" />
          </font>
       </Button>
+      <Label layoutX="896.0" layoutY="483.0" prefHeight="82.0" prefWidth="234.0" text="Enter flight number">
+         <font>
+            <Font name="Arial Bold Italic" size="25.0" />
+         </font>
+      </Label>
+      <TextField fx:id="flightNumberBtn" layoutX="882.0" layoutY="552.0" prefHeight="43.0" prefWidth="262.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
     </children>
 </AnchorPane>

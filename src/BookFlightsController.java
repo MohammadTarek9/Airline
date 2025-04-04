@@ -51,6 +51,9 @@ public class BookFlightsController {
     private Button SearchBtn;
 
     @FXML
+    private TextField flightNumberBtn;
+
+    @FXML
     void GoToCancelFlight(ActionEvent event) {
 
         try{
@@ -107,8 +110,24 @@ public class BookFlightsController {
 
     @FXML
     void HandleBooking(ActionEvent event) {
-
-        
+        String flightNumber = flightNumberBtn.getText();
+        if(flightNumber.isEmpty()){
+            showAlert(Alert.AlertType.ERROR, "Error", "Please fill in flight number field.");
+            return;
+        }
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingDetails.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) BookBtn.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("FlyOps - Booking");
+            stage.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+         
     }
 
     @FXML
