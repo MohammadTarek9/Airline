@@ -37,9 +37,9 @@ public class FlightsModel {
                 int bookedSeats = resultSet.getInt("bookedSeats");
                 String source = resultSet.getString("source");
                 String destination = resultSet.getString("destination");
-                LocalDateTime departureTime = resultSet.getTimestamp("departureTime").toLocalDateTime();
-                LocalDateTime arrivalTime = resultSet.getTimestamp("arrivalTime").toLocalDateTime();
-                double fare = resultSet.getDouble("fare");
+                String departureTime = resultSet.getString("departureTime");
+                String arrivalTime = resultSet.getString("arrivalTime");
+                double fare = resultSet.getDouble("baseFare");
                 Flight flight = new Flight(flightNumber, capacity, bookedSeats, source, destination, departureTime, arrivalTime, fare);
                 flights.add(flight);
             }

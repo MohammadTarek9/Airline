@@ -7,12 +7,12 @@ public class Flight {
     private int bookedSeats;
     private String source;
     private String destination;
-    private LocalDateTime departureTime;
-    private LocalDateTime arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private double baseFare;
     private ArrayList<Seat> seats;
 
-    public Flight(String flightNumber, int capacity, int bookedSeats, String source, String destination, LocalDateTime departureTime, LocalDateTime arrivalTime ,double fare) {
+    public Flight(String flightNumber, int capacity, int bookedSeats, String source, String destination, String departureTime, String arrivalTime ,double fare) {
         this.flightNumber = flightNumber;
         this.capacity = capacity;
         this.bookedSeats = bookedSeats;
@@ -27,7 +27,7 @@ public class Flight {
         }
     }
 
-    public Flight(String flightNumber, int capacity, String source, String destination, LocalDateTime departureTime, LocalDateTime arrivalTime, double fare) {
+    public Flight(String flightNumber, int capacity, String source, String destination, String departureTime, String arrivalTime, double fare) {
         this(flightNumber, capacity, 0, source, destination, departureTime, arrivalTime, fare);
     }
 
@@ -79,19 +79,19 @@ public class Flight {
         this.destination = destination;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
-    public LocalDateTime getArrivalTime() {
+    public String getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(LocalDateTime arrivalTime) {
+    public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -119,10 +119,10 @@ public class Flight {
         return false;
     }
 
-    public boolean Delay(LocalDateTime newDepartureTime, LocalDateTime newArrivalTime) {
-        if (newDepartureTime.isAfter(departureTime) && newArrivalTime.isAfter(arrivalTime)) {
-            departureTime = newDepartureTime;
-            arrivalTime = newArrivalTime;
+    public boolean Delay(String newDepartureTime, String newArrivalTime) {
+        if (LocalDateTime.parse(newDepartureTime).isAfter(LocalDateTime.now()) && LocalDateTime.parse(newArrivalTime).isAfter(LocalDateTime.parse(newDepartureTime))) {
+            this.departureTime = newDepartureTime;
+            this.arrivalTime = newArrivalTime;
             return true;
         }
         return false;

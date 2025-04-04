@@ -71,6 +71,25 @@ public class UserModel {
         }
         return null;
     }
+
+    public static Passenger getPassengerDetails(String email) {
+        String query = "SELECT * FROM passenger WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String phone = resultSet.getString("phone");
+                int age = resultSet.getInt("age");
+                String password = resultSet.getString("password"); 
+                return new Passenger(firstName, lastName, phone, email, password, age);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     
 }

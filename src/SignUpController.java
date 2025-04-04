@@ -84,6 +84,8 @@ public class SignUpController {
             showAlert(Alert.AlertType.ERROR, "Error", "Password must be at least 6 characters long!");
         }
         else if(result.equals("success")){
+            Passenger passenger = new Passenger(firstName, lastName, phone, email, password, Integer.parseInt(age));
+            Session.setPassenger(passenger);
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
                 Parent root = loader.load();

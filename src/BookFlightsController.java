@@ -1,3 +1,6 @@
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,10 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.Observable;
+
+import com.mysql.cj.xdevapi.Table;
 
 public class BookFlightsController {
 
@@ -38,7 +45,10 @@ public class BookFlightsController {
     private Button UpdatesBtn;
 
     @FXML
-    private TableView<?> flights;
+    private TableView flights;
+
+    @FXML
+    private Button SearchBtn;
 
     @FXML
     void GoToCancelFlight(ActionEvent event) {
@@ -94,25 +104,67 @@ public class BookFlightsController {
 
     }
 
+
     @FXML
     void HandleBooking(ActionEvent event) {
 
+        
+    }
+
+    @FXML
+    void HandleSearch(ActionEvent event) {
         String source = SourceField.getText();
         String destination = DestinationField.getText();
-        String date = DateField.getValue().toString();
+        String date = null;
+        //System.out.println(source + " " + destination);
+        if(DateField.getValue()!=null){
+            //System.out.println(DateField.getValue());
+            date = DateField.getValue().toString();
+            //System.out.println(date);
+        }
 
         if(source.isEmpty() || destination.isEmpty()){
             showAlert(Alert.AlertType.ERROR, "Error", "Please fill in source and destination fields.");
             return;
         }
-        
-        ArrayList<Flight> availableFlights = Passenger.searchFlights(source, destination);
+        Passenger passenger = Session.getPassenger();
+        ArrayList<Flight> availableFlights = passenger.searchFlights(source, destination);
+        if(date != null){
+            availableFlights = passenger.filterFlights(availableFlights,date);
+        }
         if(availableFlights.isEmpty()){
             showAlert(Alert.AlertType.INFORMATION, "No Flights Found", "No flights available for the selected route.");
             return;
         }
+
+        flights.getColumns().clear();
         
-        
+        ObservableList<Flight> flightData = FXCollections.observableArrayList(availableFlights);
+        TableColumn<Flight, String> flightColumn = new TableColumn<>("Flight Number");
+        flightColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
+
+        TableColumn<Flight, String> departureTimeColumn = new TableColumn<>("Departure Time");
+        departureTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureTime()));
+
+        TableColumn<Flight, String> arrivalTimeColumn = new TableColumn<>("Arrival Time");
+        arrivalTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalTime()));
+
+        TableColumn<Flight, String> fareColumn = new TableColumn<>("Fare");
+        fareColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBaseFare())));
+
+        TableColumn<Flight, String> capacityColumn = new TableColumn<>("Capacity");
+        capacityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCapacity())));
+
+        TableColumn<Flight, String> bookedSeatsColumn = new TableColumn<>("Booked Seats");
+        bookedSeatsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBookedSeats())));
+
+        flights.getColumns().addAll(flightColumn, departureTimeColumn, arrivalTimeColumn, fareColumn, capacityColumn, bookedSeatsColumn);
+
+
+        flights.setItems(flightData);
+        flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
 
     }
 
@@ -122,6 +174,7 @@ public class BookFlightsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+
     }
 
 }

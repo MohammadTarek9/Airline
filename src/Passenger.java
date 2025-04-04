@@ -95,6 +95,16 @@ public class Passenger {
         return availableFlights;
     }
 
+    public ArrayList<Flight> filterFlights(ArrayList<Flight> flights, String date) {
+        ArrayList<Flight> filteredFlights = new ArrayList<>();
+        for (Flight flight : flights) {
+            if (flight.getDepartureTime().contains(date)) {
+                filteredFlights.add(flight);
+            }
+        }
+        return filteredFlights;
+    }
+
     public boolean BookFlight(String bookingID, Flight flight, String seatType) {
         Booking booking = new Booking(bookingID, flight, this, seatType);
         if (booking.confirmBooking()) {
@@ -168,7 +178,7 @@ public class Passenger {
         
         return result;
     }
-
+    //not implemented yet
     public static String updateAccount(String email, String password, String phoneNumber, String ageStr) {
         String result = "success";
         

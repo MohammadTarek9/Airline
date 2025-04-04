@@ -104,5 +104,10 @@
             </font>
         </Button>
         <TableView fx:id="flights" layoutX="263.0" layoutY="429.0" prefHeight="357.0" prefWidth="718.0" style="-fx-background-color: transparent;" />
+      <Button fx:id="SearchBtn" layoutX="955.0" layoutY="291.0" mnemonicParsing="false" onAction="#HandleSearch" prefHeight="70.0" prefWidth="142.0" style="-fx-background-color: #1A3E76;" text="Search" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold Italic" size="29.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

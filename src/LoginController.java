@@ -54,6 +54,8 @@ public class LoginController {
             showAlert(Alert.AlertType.ERROR, "Error", "Incorrect password!");
         }
         else if(result.equals("success")){
+            Passenger passenger = UserModel.getPassengerDetails(email);
+            Session.setPassenger(passenger);
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
                 Parent root = loader.load();
