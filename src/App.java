@@ -19,7 +19,6 @@ public class App extends Application {
         try {
             root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
             Scene scene = new Scene(root);
-
             primaryStage.setTitle("FlyOps - Sign Up");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -30,7 +29,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        UserModel.connectToDatabase(); 
+        UserModel.connectToDatabase();
+        FlightsModel.connectToDatabase();
         launch(args);
     }
 }

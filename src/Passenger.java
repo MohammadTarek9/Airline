@@ -84,6 +84,17 @@ public class Passenger {
         return bookings;
     }
 
+    
+    public ArrayList<Flight> searchFlights(String source, String destination) {
+        ArrayList<Flight> availableFlights = new ArrayList<>();
+        for (Flight flight : Flight.getAllFlights()) {
+            if (flight.getSource().equalsIgnoreCase(source) && flight.getDestination().equalsIgnoreCase(destination)) {
+                availableFlights.add(flight);
+            }
+        }
+        return availableFlights;
+    }
+
     public boolean BookFlight(String bookingID, Flight flight, String seatType) {
         Booking booking = new Booking(bookingID, flight, this, seatType);
         if (booking.confirmBooking()) {

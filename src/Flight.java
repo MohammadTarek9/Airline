@@ -164,6 +164,12 @@ public class Flight {
         return finalFare;
     }
 
+    public static ArrayList<Flight> getAllFlights() {
+        ArrayList<Flight> flights = new ArrayList<>();
+        flights = FlightsModel.getAllFlights();
+        return flights;
+    }
+
     public void displayFlightDetails() {
         System.out.println("Flight Number: " + flightNumber);
         System.out.println("Capacity: " + capacity);
