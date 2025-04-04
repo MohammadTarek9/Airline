@@ -46,7 +46,6 @@ public class SignUpController {
     void GoToLogin(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-            LoginController loginController = new LoginController();
             Parent root = loader.load();
             Stage stage = (Stage) LoginBtn.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -62,20 +61,41 @@ public class SignUpController {
 
     @FXML
     void HandleSignUp(ActionEvent event) {
-        try{
         String firstName = FNameField.getText();
         String lastName = LNameField.getText();
         String phone = PhoneNumField.getText();
         String email = EmailField.getText();
         String password = PasswdField.getText();
-        int age = Integer.parseInt(AgeField.getText());
-
-        Passenger passenger = new Passenger(firstName, lastName, phone, email, password, age);
-        passenger.createAccount(email, password, firstName, lastName, phone, AgeField.getText());
+        String age = AgeField.getText();
+        String result = Passenger.createAccount(email, password, firstName, lastName, phone, age);
+        if(result.equals("All fields are required!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Email and password cannot be empty!");
         }
-
-        catch (IllegalArgumentException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+        else if(result.equals("Age must be a number!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Age must be a number!");
+        }
+        else if(result.equals("Invalid email format!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid email format!");
+        }
+        else if(result.equals("Invalid phone number format!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid phone number format!");
+        }
+        else if(result.equals("Password must be at least 6 characters long!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Password must be at least 6 characters long!");
+        }
+        else if(result.equals("success")){
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) SignUpBtn.getScene().getWindow();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Homepage - Login");
+                stage.show();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
        
 

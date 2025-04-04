@@ -101,36 +101,68 @@ public class Passenger {
         return false;
     }
 
-    public void createAccount(String email, String password, String firstName, String lastName, String phone, String ageStr) {
+    public static String createAccount(String email, String password, String firstName, String lastName, String phone, String ageStr) {
+        String result = "success";
         if (firstName.isEmpty() || lastName.isEmpty() || ageStr.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            throw new IllegalArgumentException("All fields are required!");
+            result = "All fields are required!";
+            return result;
         }
 
         if (!ageStr.matches("\\d+")) {
-            throw new IllegalArgumentException("Age must be a number!");
+            result = "Age must be a number!";
+            return result;
         }
         int age = Integer.parseInt(ageStr);
 
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         if (!Pattern.matches(emailRegex, email)) {
-            throw new IllegalArgumentException("Invalid email format!");
+            result = "Invalid email format!";
+            return result;
         }
         
         String phoneRegex = "^\\+\\d{1,3}\\d{9,13}$"; 
         if (!Pattern.matches(phoneRegex, phone)) {
-            throw new IllegalArgumentException("Invalid phone number format!");
+            result = "Invalid phone number format!";
+            return result;
         }
 
         if (password.length() < 6) {
-            throw new IllegalArgumentException("Password must be at least 6 characters long!");
+            result = "Password must be at least 6 characters long!";
+            return result;
         }
 
         UserModel.storeUserData(email, password, firstName, lastName, phone, age);
+        return result;
         
     }
 
-    public void login(){
-        // login
+    public static String login(String email, String password) {
+        String result = "success";
+        if (email.isEmpty() || password.isEmpty()) {
+            result = "Email and password cannot be empty!";
+            return result;
+        } else if (!UserModel.isEmailExists(email)) {
+            result = "You do not have an account!";
+            return result;
+        }
+        String dbPassword = UserModel.getPassword(email);
+        if (dbPassword == null) {
+            result = "Error retrieving password!";
+            return result;
+        } else if (!dbPassword.equals(password)) {
+            result = "Incorrect password!";
+            return result;
+        }
+
+        
+        return result;
+    }
+
+    public static String updateAccount(String email, String password, String phoneNumber, String ageStr) {
+        String result = "success";
+        
+        
+        return result;
     }
 
     @Override

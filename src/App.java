@@ -19,7 +19,7 @@ public class App extends Application {
         try {
             root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
             Scene scene = new Scene(root);
-        
+
             primaryStage.setTitle("FlyOps - Sign Up");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -30,21 +30,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        String JDBC_URL = "jdbc:mysql://localhost:3306/airvista";
-        String USERNAME = "root";
-        String PASSWORD = "root";
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            if(connection != null){
-                System.out.println("Connection established");
-            }
-            else{
-                System.out.println("Connection failed");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        UserModel.connectToDatabase(); 
         launch(args);
     }
 }

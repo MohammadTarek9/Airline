@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserModel {
@@ -8,7 +9,7 @@ public class UserModel {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
     private static Connection connection = null;
-    private static void connectToDatabase() {
+    public static void connectToDatabase() {
         try {
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             if(connection != null){
@@ -24,7 +25,6 @@ public class UserModel {
 
 
     public static void storeUserData(String email, String password, String firstName, String lastName, String phone, int age) {
-        connectToDatabase();
         String query = "INSERT INTO passenger (firstName, lastName, phone, email, password, age) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, firstName);
@@ -40,4 +40,37 @@ public class UserModel {
         } 
         
     }
+
+    public static boolean isEmailExists(String email) {
+        String query = "SELECT * FROM passenger WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true; // Email exists
+            } else {
+                return false; // Email does not exist
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Error occurred while checking email
+        } 
+    }
+
+    public static String getPassword(String email) {
+        String query = "SELECT password FROM passenger WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+    
+    
 }
