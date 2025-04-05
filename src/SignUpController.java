@@ -93,6 +93,23 @@ public class SignUpController {
         else if(result.equals("success")){
             Passenger passenger = new Passenger(firstName, lastName, phone, email, password, Integer.parseInt(age));
             ArrayList<Booking> bookings = BookingsModel.getAllBookings(email);
+            ArrayList<Seat> passengerSeats = new ArrayList<>();
+            ArrayList<Flight> flights = new ArrayList<>();
+            
+            if(bookings != null){
+            int j = 0;
+            for(Booking booking : bookings){
+                flights.add(BookingsModel.getBookingFlight(booking.getBookingID()));
+                bookings.get(j).setFlight(flights.get(j));
+                j++;
+            }
+            int i = 0;
+            for(Booking booking : bookings){
+                passengerSeats.add(BookingsModel.getBookingSeat(booking.getBookingID()));
+                bookings.get(i).setSeat(passengerSeats.get(i));
+                i++;
+            }
+        }
             passenger.setBookings(bookings);
             Session.setPassenger(passenger);
             try{

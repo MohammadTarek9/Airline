@@ -117,38 +117,33 @@ public class Passenger {
     }
 
     public boolean BookFlight(String bookingID, Flight flight, String seatType) {
-        Booking booking = new Booking(bookingID, flight, this, seatType);
-        if (booking.confirmBooking()) {
-            bookings.add(booking);
-            return true;
-        }
-        return false;
+        // Booking booking = new Booking(bookingID, flight, this, seatType);
+        // if (booking.confirmBooking()) {
+        //     bookings.add(booking);
+        //     return true;
+        // }
+        // return false;
+        return true;
     }
 
-    // public String cancelBooking(Flight flight) {
-    //     String result = "success";
-    //     if(flight == null) {
-    //         result = "Flight not found!";
-    //         return result;
-    //     }
-    //     ArrayList<Booking> allBookings = BookingsModel.findAllBookings();
-    //     Booking booking = null;
-    //     for (Booking b : allBookings) {
-    //         if (b.getFlight().getFlightNumber().equals(flight.getFlightNumber()) && b.getPassenger().getEmail().equals(this.email)) {
-    //             booking = b;
-    //             ArrayList<Seat> seats = booking.getFlight().getSeats();
-
-    //             break;
-    //         }
-    //     }
-    //     if (booking == null) {
-    //         result = "Booking not found!";
-    //         return result;
-    //     }
-    //     result = booking.cancelBooking();
-        
-
-    // }
+    public String cancelBooking(ArrayList<Booking> passengerBookings, String bookingID) {
+        String result = "success";
+        Seat seat = BookingsModel.getBookingSeat(bookingID);
+        Flight flight = BookingsModel.getBookingFlight(bookingID);
+        String flightNumber = flight.getFlightNumber();
+        boolean r1 = SeatModel.updateSeatAvailability(flightNumber, seat.getSeat_id(), true);
+        boolean r3 = FlightsModel.decrementBookedSeats(flightNumber);
+        if(!r1 || !r3){
+            result = "Error updating seat availability!";
+            return result;
+        }
+        boolean r2 = BookingsModel.deleteBooking(bookingID);
+        if(!r2){
+            result = "Error deleting booking!";
+            return result;
+        }
+        return result;
+    }
 
     public static String createAccount(String email, String password, String firstName, String lastName, String phone, String ageStr) {
         String result = "success";
@@ -190,6 +185,10 @@ public class Passenger {
         
     }
 
+    public void refreshBookings() {
+        this.bookings = BookingsModel.getAllBookings(this.email);
+    }
+
     public static String login(String email, String password) {
         String result = "success";
         if (email.isEmpty() || password.isEmpty()) {
@@ -214,20 +213,6 @@ public class Passenger {
     //not implemented yet
     public static String updateAccount(String email, String password, String phoneNumber, String ageStr) {
         String result = "success";
-        
-        
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Passenger{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", age=" + age +
-                '}';
     }
 }

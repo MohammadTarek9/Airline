@@ -31,7 +31,7 @@ public class CancelFlightController implements Initializable {
     private Button CancelFlightBtn;
 
     @FXML
-    private TextField FlightNumField;
+    private TextField BookingIDField;
 
     @FXML
     private Button ManageAccBtn;
@@ -46,24 +46,24 @@ public class CancelFlightController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         flights.getColumns().clear();
-        TableColumn<Flight, String> flightNumberCol = new TableColumn<>("Flight Number");
-        flightNumberCol.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
 
-        TableColumn<Flight, String> sourceCol = new TableColumn<>("Source");
-        sourceCol.setCellValueFactory(new PropertyValueFactory<>("source"));
+        TableColumn<Booking, String> bookingIDCol = new TableColumn<>("Booking ID");
+        bookingIDCol.setCellValueFactory(new PropertyValueFactory<>("bookingID"));
 
-        TableColumn<Flight, String> destinationCol = new TableColumn<>("Destination");
-        destinationCol.setCellValueFactory(new PropertyValueFactory<>("destination"));
+        TableColumn<Booking, String> flightNumberCol = new TableColumn<>("Flight Number");
+        flightNumberCol.setCellValueFactory(data -> {
+            Flight flight = data.getValue().getFlight();
+            return new SimpleStringProperty(flight != null ? flight.getFlightNumber() : "N/A");
+        });
 
+        TableColumn<Booking, String> seatIDCol = new TableColumn<>("Seat ID");
+        seatIDCol.setCellValueFactory(data -> {
+            Seat seat = data.getValue().getSeat();
+            return new SimpleStringProperty(seat != null ? seat.getSeat_id() : "N/A");
+        });
         
-        TableColumn<Flight, String> departureTimeCol = new TableColumn<>("Departure Time");
-        departureTimeCol.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
 
-        
-        TableColumn<Flight, String> arrivalTimeCol = new TableColumn<>("Arrival Time");
-        arrivalTimeCol.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
-
-        flights.getColumns().addAll(flightNumberCol, sourceCol, destinationCol, departureTimeCol, arrivalTimeCol);
+        flights.getColumns().addAll(bookingIDCol, flightNumberCol, seatIDCol);
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Passenger passenger = Session.getPassenger();
@@ -73,7 +73,7 @@ public class CancelFlightController implements Initializable {
         for (Booking booking : bookings) {
             allFlights.add(booking.getFlight());
         }
-        ObservableList<Flight> flightData = FXCollections.observableArrayList(allFlights);
+        ObservableList<Booking> flightData = FXCollections.observableArrayList(bookings);
         flights.setItems(flightData);
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -137,23 +137,36 @@ public class CancelFlightController implements Initializable {
     @FXML
     void HandleCancellation(ActionEvent event) {
 
-        // String flightNumber = FlightNumField.getText();
-        // if (flightNumber.isEmpty()) {
-        //     showAlert(Alert.AlertType.ERROR, "Error", "Flight number cannot be empty!");
-        //     return;
-        // }
+        String bookingID = BookingIDField.getText();
+        if (bookingID.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Flight number cannot be empty!");
+            return;
+        }
 
-        // Passenger passenger = Session.getPassenger();
-        // Flight flight = FlightsModel.getFlightDetails(flightNumber);
-        // String result = passenger.cancelBooking(flight);
-        // if (result.equals("success")) {
-        //     showAlert(Alert.AlertType.INFORMATION, "Success", "Flight cancelled successfully!");
-        //     FlightNumField.clear();
-        //     initialize(null, null); // Refresh the table view
-        // } else {
-        //     showAlert(Alert.AlertType.ERROR, "Error", result);
-        // }
+        Passenger passenger = Session.getPassenger();
+        ArrayList<Booking> passengerBookings = passenger.getBookings();
+        if(passengerBookings == null || passengerBookings.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No bookings found for this passenger!");
+            return;
+        }
+        String result = passenger.cancelBooking(passengerBookings, bookingID);
+        if(result.equals("success")){
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Booking cancelled successfully!");
+            BookingIDField.clear();
+            passenger.refreshBookings(); 
+            refreshTable();
+        }
+        else{
+            showAlert(Alert.AlertType.ERROR, "Error", result);
+        }
+        
+    }
 
+    private void refreshTable() {
+        Passenger passenger = Session.getPassenger();
+        ArrayList<Booking> updatedBookings = passenger.getBookings();
+        ObservableList<Booking> bookingData = FXCollections.observableArrayList(updatedBookings);
+        flights.setItems(bookingData);
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

@@ -25,7 +25,7 @@ public class SeatModel {
     }
 
     public static boolean updateSeatAvailability(String flightNumber, String seat_id, boolean available) {
-        String query = "UPDATE seats SET available = ? WHERE flightNumber = ? AND seat_id = ?";
+        String query = "UPDATE seat SET available = ? WHERE flightNumber = ? AND seat_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setBoolean(1, available);
             preparedStatement.setString(2, flightNumber);
@@ -40,19 +40,35 @@ public class SeatModel {
 
     public static ArrayList<Seat> getAllSeats(String flightNumber) {
         ArrayList<Seat> seats = new ArrayList<>();
-        String query = "SELECT * FROM seats WHERE flightNumber = ?";
+        String query = "SELECT * FROM seat WHERE flightNumber = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, flightNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String seat_id = resultSet.getString("seat_id");
                 boolean available = resultSet.getBoolean("available");
-                Seat seat = new Seat(seat_id, available);
+                String seatType = resultSet.getString("seatType");
+                Seat seat = new Seat(seat_id, available, seatType);
                 seats.add(seat);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return seats;
+    }
+
+    public static String getSeatType(String seat_id, String flightNumber) {
+        String query = "SELECT seatType FROM seat WHERE seat_id = ? AND flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, seat_id);
+            preparedStatement.setString(2, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("seatType");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

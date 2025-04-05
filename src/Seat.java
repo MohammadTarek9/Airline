@@ -10,10 +10,13 @@ public class Seat {
         this.available = true;
     }
 
-    public Seat(String seat_id, boolean available) {
+    public Seat(String seat_id, boolean available, String seatType) {
         this.seat_id = seat_id;
         this.available = available;
+        this.seatType = seatType;
     }
+
+
 
     public String getSeatType() {
         return seatType;

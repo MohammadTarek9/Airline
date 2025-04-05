@@ -34,10 +34,12 @@ public class BookingsModel {
                 String flightNumber = resultSet.getString("flightNumber");
                 String bookingId = resultSet.getString("bookingID");
                 String passengerEmail = resultSet.getString("email");
-                String seatType = resultSet.getString("seatType");
+                String seat_id = resultSet.getString("seat_id");
                 Passenger passenger = UserModel.getPassengerDetails(passengerEmail);
                 Flight flight = FlightsModel.getFlightDetails(flightNumber);
-                Booking booking = new Booking(bookingId, flight, passenger, seatType);
+                String seatType = SeatModel.getSeatType(seat_id, flightNumber);
+                Seat seat = new Seat(seat_id, false, seatType);
+                Booking booking = new Booking(bookingId, flight, passenger, seat);
                 bookings.add(booking);
             }
 
@@ -50,28 +52,30 @@ public class BookingsModel {
 
     }
 
-    public static ArrayList<Booking> findAllBookings() {
-        ArrayList<Booking> bookings = new ArrayList<>();
-        String query = "SELECT * FROM booking WHERE isConfirmed = 1";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String flightNumber = resultSet.getString("flightNumber");
-                String bookingId = resultSet.getString("bookingID");
-                String passengerEmail = resultSet.getString("email");
-                String seatType = resultSet.getString("seatType");
-                Passenger passenger = UserModel.getPassengerDetails(passengerEmail);
-                Flight flight = FlightsModel.getFlightDetails(flightNumber);
-                Booking booking = new Booking(bookingId, flight, passenger, seatType);
-                bookings.add(booking);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return bookings;
-    }
+    // public static ArrayList<Booking> findAllBookings() {
+    //     ArrayList<Booking> bookings = new ArrayList<>();
+    //     String query = "SELECT * FROM booking WHERE isConfirmed = 1";
+    //     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    //         ResultSet resultSet = preparedStatement.executeQuery();
+    //         while (resultSet.next()) {
+    //             String flightNumber = resultSet.getString("flightNumber");
+    //             String bookingId = resultSet.getString("bookingID");
+    //             String passengerEmail = resultSet.getString("email");
+    //             String seat_id = resultSet.getString("seat_id");
+    //             Passenger passenger = UserModel.getPassengerDetails(passengerEmail);
+    //             Flight flight = FlightsModel.getFlightDetails(flightNumber);
+    //             Seat seat = new Seat(seat_id, false, resultSet.getString("seatType")); 
+    //             Booking booking = new Booking(bookingId, flight, passenger, seat);
+    //             bookings.add(booking);
+    //         }
+
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    //     return bookings;
+    // }
 
     public static boolean deleteBooking(String bookingId) {
         String query = "DELETE FROM booking WHERE bookingID = ?";
@@ -89,5 +93,37 @@ public class BookingsModel {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static Seat getBookingSeat(String bookingId) {
+        String query = "SELECT seat_id, flightNumber FROM booking WHERE bookingID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, bookingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String seat_id = resultSet.getString("seat_id");
+                String flightNumber = resultSet.getString("flightNumber");
+                String seatType = SeatModel.getSeatType(seat_id, flightNumber);
+                return new Seat(seat_id, false, seatType);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Flight getBookingFlight(String bookingId) {
+        String query = "SELECT flightNumber FROM booking WHERE bookingID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, bookingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String flightNumber = resultSet.getString("flightNumber");
+                return FlightsModel.getFlightDetails(flightNumber);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

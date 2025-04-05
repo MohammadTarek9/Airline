@@ -65,10 +65,10 @@ public class Payment {
     }
 
     public boolean processPayment() {
-        if (flight == null || amount !=flight.calculateFare(booking.getSeatType())) {
-            System.out.println("Payment failed: Amount does not match flight fare.");
-            return false;
-        }
+        // if (flight == null || amount !=flight.calculateFare(booking.getSeatType())) {
+        //     System.out.println("Payment failed: Amount does not match flight fare.");
+        //     return false;
+        // }
 
         if (paymentMethod == null || (!paymentMethod.equalsIgnoreCase("Credit Card") && !paymentMethod.equalsIgnoreCase("Debit Card"))) {
             System.out.println("Payment failed: Invalid payment method.");

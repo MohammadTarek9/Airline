@@ -9,7 +9,7 @@ public class Booking {
     private Boolean isConfirmed;
     private Seat seat;
 
-    public Booking(String bookingID, Flight flight, Passenger passenger, String seatType) {
+    public Booking(String bookingID, Flight flight, Passenger passenger, Seat seat) {
         this.bookingID = bookingID;
         this.flight = flight;
         this.passenger = passenger;
@@ -64,25 +64,6 @@ public class Booking {
         }
         return false;
     }
-
-//     public String cancelBooking() {
-//        boolean deleted = BookingsModel.deleteBooking(this.bookingID);
-//        if (!deleted) {
-//            return "Failed to cancel booking!";
-//        }
-
-//        boolean updated = FlightsModel.decrementBookedSeats(flight.getFlightNumber());
-//        if (!updated) {
-//            return "Failed to update flight booking count!";
-//        }
-       
-//        ArrayList<Seat> seats = SeatModel.getAllSeats(flight.getFlightNumber());
-//        for (Seat seat: seats){
-//             if(seat.getSeat_id().equals())
-//        }
-
-//        return "success";
-//    }
         
 
 

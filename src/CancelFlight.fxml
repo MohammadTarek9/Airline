@@ -77,8 +77,8 @@
          </font>
       </Button>
       <TableView fx:id="flights" layoutX="220.0" layoutY="273.0" prefHeight="490.0" prefWidth="649.0" style="-fx-background-color: transparent;" translateY="-25.0" />
-      <TextField fx:id="FlightNumField" layoutX="924.0" layoutY="595.0" prefHeight="62.0" prefWidth="207.0" />
-      <Label layoutX="911.0" layoutY="520.0" prefHeight="74.0" prefWidth="238.0" text="Enter flight number">
+      <TextField fx:id="BookingIDField" layoutX="924.0" layoutY="595.0" prefHeight="62.0" prefWidth="207.0" />
+      <Label layoutX="911.0" layoutY="520.0" prefHeight="74.0" prefWidth="238.0" text="Enter Booking ID">
          <font>
             <Font name="Arial Bold Italic" size="24.0" />
          </font>
