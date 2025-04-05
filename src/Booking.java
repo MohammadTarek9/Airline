@@ -7,8 +7,7 @@ public class Booking {
     private Flight flight;
     private Passenger passenger;
     private Boolean isConfirmed;
-    private String seatType;
-    private String seatID;
+    private Seat seat;
 
     public Booking(String bookingID, Flight flight, Passenger passenger, String seatType) {
         this.bookingID = bookingID;
@@ -23,14 +22,6 @@ public class Booking {
 
     public void setBookingID(String bookingID) {
         this.bookingID = bookingID;
-    }
-
-    public String getSeatID() {
-        return seatID;
-    }
-
-    public void setSeatID(String seatID) {
-        this.seatID = seatID;
     }
 
     public Flight getFlight() {
@@ -57,16 +48,16 @@ public class Booking {
         this.isConfirmed = isConfirmed;
     }
 
-    public String getSeatType() {
-        return seatType;
+    public Seat getSeat() {
+        return seat;
     }
 
-    public void setSeatType(String seatType) {
-        this.seatType = seatType;
+    public void setSeat(Seat seat) {
+        this.seat = seat;
     }
 
     public boolean confirmBooking() {
-        Payment payment = new Payment(this, flight.calculateFare(seatType));
+        Payment payment = new Payment(this, flight.calculateFare(seat.getSeatType()));
         if (payment.processPayment() && flight.bookSeat()) {
             this.isConfirmed = true;
             return true;

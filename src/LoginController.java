@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,6 +57,8 @@ public class LoginController {
         }
         else if(result.equals("success")){
             Passenger passenger = UserModel.getPassengerDetails(email);
+            ArrayList<Booking> bookings = BookingsModel.getAllBookings(email);
+            passenger.setBookings(bookings);
             Session.setPassenger(passenger);
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));

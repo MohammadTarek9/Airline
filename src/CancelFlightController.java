@@ -67,7 +67,8 @@ public class CancelFlightController implements Initializable {
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Passenger passenger = Session.getPassenger();
-        ArrayList<Booking> bookings = passenger.fetchBookings();
+        //ArrayList<Booking> bookings = passenger.fetchBookings();
+        ArrayList<Booking> bookings = passenger.getBookings();
         ArrayList<Flight> allFlights = new ArrayList<>();
         for (Booking booking : bookings) {
             allFlights.add(booking.getFlight());

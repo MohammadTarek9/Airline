@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,6 +79,11 @@ public class SignUpController {
         else if(result.equals("Invalid email format!")){
             showAlert(Alert.AlertType.ERROR, "Error", "Invalid email format!");
         }
+
+        else if(result.equals("Email already exists!")){
+            showAlert(Alert.AlertType.ERROR, "Error", "Email already exists!");
+        }
+        
         else if(result.equals("Invalid phone number format!")){
             showAlert(Alert.AlertType.ERROR, "Error", "Invalid phone number format!");
         }
@@ -85,6 +92,8 @@ public class SignUpController {
         }
         else if(result.equals("success")){
             Passenger passenger = new Passenger(firstName, lastName, phone, email, password, Integer.parseInt(age));
+            ArrayList<Booking> bookings = BookingsModel.getAllBookings(email);
+            passenger.setBookings(bookings);
             Session.setPassenger(passenger);
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));

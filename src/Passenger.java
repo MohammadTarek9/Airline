@@ -85,6 +85,10 @@ public class Passenger {
         return bookings;
     }
 
+    public void setBookings(ArrayList <Booking> bookings){
+        this.bookings = bookings;
+    }
+
     
     public ArrayList<Flight> searchFlights(String source, String destination) {
         ArrayList<Flight> availableFlights = new ArrayList<>();
@@ -162,6 +166,11 @@ public class Passenger {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         if (!Pattern.matches(emailRegex, email)) {
             result = "Invalid email format!";
+            return result;
+        }
+
+        if(UserModel.isEmailExists(email)) {
+            result = "Email already exists!";
             return result;
         }
         
