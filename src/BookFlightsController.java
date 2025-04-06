@@ -45,7 +45,7 @@ public class BookFlightsController {
     private Button UpdatesBtn;
 
     @FXML
-    private TableView flights;
+    private TableView<Flight> flights;
 
     @FXML
     private Button SearchBtn;
@@ -114,16 +114,31 @@ public class BookFlightsController {
             showAlert(Alert.AlertType.ERROR, "Error", "Please fill in flight number field.");
             return;
         }
-        try{
+        Flight selectedFlight = flights.getItems().stream()
+                .filter(f -> f.getFlightNumber().equals(flightNumber))
+                .findFirst()
+                .orElse(null);
+
+        if (selectedFlight == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No matching flight found.");
+            return;
+        }
+
+        Session.setFlight(selectedFlight);
+
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingDetails.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) BookBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("FlyOps - Booking");
+
+            BookingDetailsController controller = loader.getController();
+            controller.initialize(selectedFlight.getFlightNumber());
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setTitle("Booking details");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
          

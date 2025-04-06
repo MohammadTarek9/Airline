@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="boardingPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="622.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="41.0" fitWidth="88.0" layoutX="160.0" layoutY="149.0" rotate="9.0">
+         <image>
+            <Image url="@images.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="237.0" fitWidth="404.0" layoutY="40.0" opacity="0.28">
+         <image>
+            <Image url="@pngimg.com_-_world_map_PNG2.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="400.0" prefHeight="278.0" prefWidth="194.0" style="-fx-background-color: #1A3E76;">
+         <children>
+            <ImageView fitHeight="46.0" fitWidth="212.0" layoutX="5.0" layoutY="225.0">
+               <image>
+                  <Image url="@barcode.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="DestinationLabel11" layoutX="9.0" layoutY="47.0" prefHeight="30.0" prefWidth="79.0" text="Passenger:" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="DestinationLabel131" layoutX="9.0" layoutY="94.0" prefHeight="30.0" prefWidth="96.0" text="Flight Number:" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="DestinationLabel121" layoutX="9.0" layoutY="139.0" prefHeight="30.0" prefWidth="110.0" text="Departure Time :" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="DestinationLabel1211" layoutX="9.0" layoutY="180.0" prefHeight="30.0" prefWidth="96.0" text="Arrival at:" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="passengerlabel" layoutX="85.0" layoutY="47.0" prefHeight="30.0" prefWidth="136.0" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="flightNumberLabel" layoutX="104.0" layoutY="94.0" prefHeight="30.0" prefWidth="118.0" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="departureLabel" layoutX="117.0" layoutY="139.0" prefHeight="30.0" prefWidth="103.0" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="arrivalLabel" layoutX="88.0" layoutY="180.0" prefHeight="30.0" prefWidth="110.0" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <Label layoutX="49.0" layoutY="90.0" prefHeight="46.0" prefWidth="50.0" text="From">
+         <font>
+            <Font name="AGA Arabesque" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="327.0" layoutY="90.0" prefHeight="46.0" prefWidth="50.0" text="To">
+         <font>
+            <Font name="AGA Arabesque Desktop" size="20.0" />
+         </font>
+      </Label>
+      <Pane layoutX="-1.0" layoutY="-2.0" prefHeight="46.0" prefWidth="600.0" style="-fx-background-color: #1A3E76;">
+         <children>
+            <Label layoutX="14.0" layoutY="5.0" prefHeight="36.0" prefWidth="253.0" text="Boarding Pass" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="431.0" prefHeight="46.0" prefWidth="59.0" text="GATE:" textFill="WHITE">
+               <font>
+                  <Font name="AGA Arabesque" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="gatelabel" layoutX="490.0" layoutY="5.0" prefHeight="36.0" prefWidth="96.0" text="12" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label fx:id="DestinationLabel" layoutX="255.0" layoutY="141.0" prefHeight="36.0" prefWidth="143.0">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label fx:id="DestinationLabel1" layoutX="27.0" layoutY="191.0" prefHeight="30.0" prefWidth="79.0" text="Passenger">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="DestinationLabel12" layoutX="287.0" layoutY="191.0" prefHeight="30.0" prefWidth="96.0" text="Scheduled for">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="DestinationLabel13" layoutX="159.0" layoutY="191.0" prefHeight="30.0" prefWidth="96.0" text="Flight Number">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="passengerlabel1" layoutX="10.0" layoutY="221.0" prefHeight="30.0" prefWidth="103.0" textFill="#1434a4">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="flightNumberlabel1" layoutX="150.0" layoutY="221.0" prefHeight="30.0" prefWidth="110.0" textFill="#1434a4">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="schedulelabel" layoutX="280.0" layoutY="221.0" prefHeight="30.0" prefWidth="110.0" textFill="#1434a4">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="72.0" fitWidth="50.0" layoutX="190.0" layoutY="81.0" rotate="90.0">
+         <image>
+            <Image url="@airplane-logo-6885950420-seeklogo.com.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="ArrivalLabel" layoutX="2.0" layoutY="141.0" prefHeight="36.0" prefWidth="150.0">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -81,4 +81,16 @@ public class FlightsModel {
             return false;
         }
     }
+
+    public static void incrementBookedSeats(String flightNumber) {
+        String query = "UPDATE flight SET bookedSeats = bookedSeats + 1 WHERE flightNumber = ?";
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, flightNumber);
+            statement.executeUpdate();
+            System.out.println("Booked seats incremented for flight: " + flightNumber);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
