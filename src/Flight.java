@@ -99,7 +99,7 @@ public class Flight {
         return baseFare;
     }
 
-    public void setTicketPrice(double fare) {
+    public void setFare(double fare) {
         this.baseFare = fare;
     }
 
@@ -128,21 +128,16 @@ public class Flight {
         return false;
     }
 
-    public boolean bookSeat() {
+    public void bookSeat() {
         if (bookedSeats < capacity) {
             bookedSeats++;
-            return true;
         }
-        return false;
     }
 
-    public boolean cancelBooking() {
+    public void cancelBooking() {
         if (bookedSeats > 0) {
             bookedSeats--;
-            seats.add(new Seat("S" + (bookedSeats + 1)));
-            return true;
         }
-        return false;
     }
 
     public double calculateFare(String seatType) {

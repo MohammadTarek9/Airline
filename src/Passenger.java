@@ -124,7 +124,8 @@ public class Passenger {
         }
         boolean r1 = SeatModel.updateSeatAvailability(flight.getFlightNumber(), seat_id, false);
         FlightsModel.incrementBookedSeats(flight.getFlightNumber());
-        flight.setBookedSeats(flight.getBookedSeats() + 1);
+        flight.bookSeat();
+        flight.UpdateAvailableSeats(seat);
         if(!r1) {
             return false;
         }
@@ -147,6 +148,7 @@ public class Passenger {
             return result;
         }
         boolean r2 = BookingsModel.deleteBooking(bookingID);
+        flight.cancelBooking();
         if(!r2){
             result = "Error deleting booking!";
             return result;
