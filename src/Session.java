@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 
 public class Session {
+
     private static Passenger passenger;
-    private static ArrayList<Booking> bookings = new ArrayList<>();
+    private static Booking booking;
     private static Flight flight;
 
 
@@ -14,12 +15,12 @@ public class Session {
         return Session.passenger;
     }
 
-    public static ArrayList<Booking> getBookings() {
-        return Session.bookings;
+    public static Booking getBookings() {
+        return Session.booking;
     }
 
-    public static void setBookings(ArrayList<Booking> bookings) {
-        Session.bookings = bookings;
+    public static void setBookings(Booking booking) {
+        Session.booking = booking;
     }
 
     public static Flight getFlight() {

@@ -71,4 +71,21 @@ public class SeatModel {
         }
         return null;
     }
+
+    public static Seat getSeatDetails(String seat_id, String flightNumber) {
+        String query = "SELECT * FROM seat WHERE seat_id = ? AND flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, seat_id);
+            preparedStatement.setString(2, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                boolean available = resultSet.getBoolean("available");
+                String seatType = resultSet.getString("seatType");
+                return new Seat(seat_id, available, seatType);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

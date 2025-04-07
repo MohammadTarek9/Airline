@@ -1,6 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,8 +12,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import javafx.scene.control.Label;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class PaymentController {
+public class PaymentController implements Initializable {
 
 @FXML
 private TextField CCNumber;
@@ -25,6 +29,21 @@ private DatePicker ExDate;
 
 @FXML
 private PasswordField CCV;
+
+@FXML
+private Label amount;
+
+@Override
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    Booking passengerBooking = Session.getPassenger().getBookings().get(Session.getPassenger().getBookings().size() - 1);
+    System.out.println("Passenger BookingID: " + passengerBooking.getBookingID());
+    Flight flight = passengerBooking.getFlight();
+    System.out.println("Flight Number: " + flight.getFlightNumber());
+    System.out.println("Flight Fare: " + flight.getBaseFare());
+    Seat seat = passengerBooking.getSeat();
+    amount.setText(String.valueOf(flight.calculateFare(seat.getSeatType())));
+
+}
 
 @FXML
 private void clearPaymentFields() {
@@ -41,16 +60,17 @@ private void showAlert(Alert.AlertType alertType, String title, String message) 
     alert.showAndWait();
 }
 // used for setting variables from previous scene
-private String seatId;
-private String flightNumber;
+// private String seatId;
+// private String flightNumber;
 
-public void setSeatAndFlight(String seatId, String flightNumber) {
-    this.seatId = seatId;
-    this.flightNumber = flightNumber;
-}
+// public void setSeatAndFlight(String seatId, String flightNumber) {
+//     this.seatId = seatId;
+//     this.flightNumber = flightNumber;
+// }
 
 @FXML
 private void handlePayment(ActionEvent event) {
+
     if (CCNumber.getText().isEmpty() || 
         CCHolderName.getText().isEmpty() || 
         ExDate.getValue() == null || 
@@ -59,14 +79,20 @@ private void handlePayment(ActionEvent event) {
         showAlert(Alert.AlertType.WARNING, "Missing Fields", "Please fill in all the payment details.");
         return;
     }
+    String cardNumber = CCNumber.getText();
+    int ccv = Integer.parseInt(CCV.getText());
+    Booking currentBooking = Session.getPassenger().getBookings().get(Session.getPassenger().getBookings().size() - 1);
+    boolean confirmed = currentBooking.confirmBooking(cardNumber, ccv);
+    if (confirmed) {
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Payment successful! Booking confirmed.");
+        clearPaymentFields();
+    } else {
+        showAlert(Alert.AlertType.ERROR, "Error", "Payment failed. Please try again.");
+    }
 
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("BoardingPass.fxml"));
         Parent root = loader.load();
-
-        SeatModel.updateSeatAvailability(seatId, flightNumber, false);
-        FlightsModel.incrementBookedSeats(flightNumber);
-
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Boarding Pass");
@@ -95,7 +121,7 @@ void GoToManageAccount(ActionEvent event) {
 @FXML
 void GoToUpdates(ActionEvent event) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard-Updates.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));

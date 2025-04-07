@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="798.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BookingDetailsController">
+<AnchorPane prefHeight="798.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BookingDetailsController">
 
    <children>
       <VBox prefHeight="798.0" prefWidth="101.0" style="-fx-background-color: #1A3E76;">
@@ -48,7 +48,7 @@
       <Label layoutX="127.0" layoutY="21.0" text="Flight Number:"><font><Font name="System Bold Italic" size="24.0" /></font></Label>
       <Label fx:id="FlightNo" layoutX="309.0" layoutY="22.0"><font><Font size="24.0" /></font></Label>
 
-      <Label layoutX="127.0" layoutY="77.0" text="Fare:"><font><Font name="System Bold Italic" size="24.0" /></font></Label>
+      <Label layoutX="127.0" layoutY="77.0" text="Base Fare:"><font><Font name="System Bold Italic" size="24.0" /></font></Label>
       <Label fx:id="Fare" layoutX="194.0" layoutY="77.0"><font><Font size="24.0" /></font></Label>
 
       <Label layoutX="127.0" layoutY="134.0" text="Capacity:"><font><Font name="System Bold Italic" size="24.0" /></font></Label>
@@ -66,12 +66,12 @@
       <Label layoutX="607.0" layoutY="192.0" text="Arrival Time:"><font><Font name="System Bold Italic" size="24.0" /></font></Label>
       <Label fx:id="ArrivalTime" layoutX="763.0" layoutY="134.0"><font><Font size="24.0" /></font></Label>
 
-      <Label layoutX="123.0" layoutY="257.0" text="Choose your seat!"><font><Font size="24.0" /></font></Label>
+      <Label layoutX="123.0" layoutY="257.0" text="Choose your seat! (50% fare increase for business, and 100% for first class) "><font><Font size="24.0" /></font></Label>
 
       <!-- Seating Chart Grid -->
       <GridPane fx:id="seatGrid" hgap="5" layoutX="123.0" layoutY="310.0" vgap="5" />
 
-      <Button layoutX="773.0" layoutY="620.0" mnemonicParsing="false" onAction="#GoTopayment" prefHeight="43.0" prefWidth="248.0" style="-fx-background-color: #1A3E76;" text="Procceed to payment" textFill="WHITE">
+      <Button fx:id="goToPaymentBtn" layoutX="773.0" layoutY="620.0" mnemonicParsing="false" onAction="#GoTopayment" prefHeight="43.0" prefWidth="248.0" style="-fx-background-color: #1A3E76;" text="Proceed to payment" textFill="WHITE">
          <font><Font size="21.0" /></font>
       </Button>
       <Label fx:id="seatID" layoutX="938.0" layoutY="567.0" prefHeight="43.0" prefWidth="82.0">
@@ -89,7 +89,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="fareID" layoutX="194.0" layoutY="77.0" prefHeight="35.0" prefWidth="156.0">
+      <Label fx:id="fareID" layoutX="248.0" layoutY="77.0" prefHeight="35.0" prefWidth="156.0">
          <font>
             <Font size="24.0" />
          </font>

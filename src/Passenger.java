@@ -12,7 +12,6 @@ public class Passenger {
     private String email;
     private String password;
     private int age;
-    private ArrayList <Payment> payments;
 
     public Passenger(String firstName, String lastName, String phone, String email, String password, int age) {
         this.firstName = firstName;
@@ -22,7 +21,6 @@ public class Passenger {
         this.password = password;
         this.age = age;
         this.bookings = new ArrayList<>();
-        this.payments = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -73,20 +71,16 @@ public class Passenger {
         this.age = age;
     }
 
-    public boolean Pay(Payment payment){
-        boolean success = payment.processPayment();
-        if (success) {
-            payments.add(payment);
-        }
-        return success;
-    }
-
     public ArrayList <Booking> getBookings(){
         return bookings;
     }
 
     public void setBookings(ArrayList <Booking> bookings){
         this.bookings = bookings;
+    }
+
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
     }
 
     
@@ -116,17 +110,30 @@ public class Passenger {
         return allBookings;
     }
 
-    public boolean BookFlight(String bookingID, Flight flight, String seatType) {
-        // Booking booking = new Booking(bookingID, flight, this, seatType);
-        // if (booking.confirmBooking()) {
-        //     bookings.add(booking);
-        //     return true;
-        // }
-        // return false;
+    public boolean BookFlight(String seat_id) {
+        Flight flight = Session.getFlight();
+        System.out.println("Flight Number: " + flight.getFlightNumber()); 
+        Seat seat = SeatModel.getSeatDetails(seat_id, flight.getFlightNumber());
+        System.out.println("Seat ID: " + seat.getSeat_id());
+        System.out.println("Seat Type: " + seat.getSeatType());
+        int bookingID = BookingsModel.addBooking(flight.getFlightNumber(), Session.getPassenger(), seat_id);
+        if(bookingID == -1) {
+            return false;
+        }
+        boolean r1 = SeatModel.updateSeatAvailability(flight.getFlightNumber(), seat_id, false);
+        FlightsModel.incrementBookedSeats(flight.getFlightNumber());
+        flight.setBookedSeats(flight.getBookedSeats() + 1);
+        if(!r1) {
+            return false;
+        }
+        Booking booking = new Booking(bookingID, flight, Session.getPassenger(), seat);
+        System.out.println("Seat id tany " + booking.getSeat().getSeat_id());
+        booking.setIsConfirmed(false);
+        this.bookings.add(booking);
         return true;
     }
 
-    public String cancelBooking(ArrayList<Booking> passengerBookings, String bookingID) {
+    public String cancelBooking(ArrayList<Booking> passengerBookings, int bookingID) {
         String result = "success";
         Seat seat = BookingsModel.getBookingSeat(bookingID);
         Flight flight = BookingsModel.getBookingFlight(bookingID);

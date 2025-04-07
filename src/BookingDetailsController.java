@@ -27,6 +27,7 @@ public class BookingDetailsController {
     @FXML private Label departureTimeID;
     @FXML private Label arrivalTimeID;
     @FXML private Label sourceID;
+    @FXML private Button goToPaymentBtn;
 
     public void initialize(String flightNumber) {
         SeatModel.connectToDatabase(); // Ensure DB is connected
@@ -102,7 +103,7 @@ void GoToManageAccount(ActionEvent event) {
 @FXML
 void GoToUpdates(ActionEvent event) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard-Updates.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -141,19 +142,28 @@ void GoToUpdates(ActionEvent event) {
         alert.showAndWait();
     }
 
-    @FXML
+@FXML
 void GoTopayment(ActionEvent event) {
     // Check if a seat is selected
     if (seatID.getText() == null || seatID.getText().trim().isEmpty()) {
         showAlert(Alert.AlertType.ERROR, "Error", "Please choose a seat.");
         return;
     }
+        Passenger passenger = Session.getPassenger();
+        String seat_id = seatID.getText();
+        boolean res = passenger.BookFlight(seat_id);
+        if(!res) {
+        showAlert(Alert.AlertType.ERROR, "Error", "Booking failed. Please try again.");
+        return;
+        }
+    // Passenger passenger = Session.getPassenger();
+    // passenger.addBooking(booking); 
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Payment.fxml"));
         Parent root = loader.load();
 
         PaymentController controller = loader.getController();
-        controller.setSeatAndFlight(seatID.getText(), flightNum.getText());
+        // controller.setSeatAndFlight(seatID.getText(), flightNum.getText());
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setTitle("Payment");

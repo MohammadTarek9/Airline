@@ -61,9 +61,16 @@ public class CancelFlightController implements Initializable {
             Seat seat = data.getValue().getSeat();
             return new SimpleStringProperty(seat != null ? seat.getSeat_id() : "N/A");
         });
+
+        // confirmed column
+        TableColumn<Booking, String> confirmedCol = new TableColumn<>("Confirmed");
+        confirmedCol.setCellValueFactory(data -> {
+            Booking booking = data.getValue();
+            return new SimpleStringProperty(booking.getIsConfirmed() ? "Yes" : "No");
+        });
         
 
-        flights.getColumns().addAll(bookingIDCol, flightNumberCol, seatIDCol);
+        flights.getColumns().addAll(bookingIDCol, flightNumberCol, seatIDCol, confirmedCol);
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Passenger passenger = Session.getPassenger();
@@ -137,11 +144,12 @@ public class CancelFlightController implements Initializable {
     @FXML
     void HandleCancellation(ActionEvent event) {
 
-        String bookingID = BookingIDField.getText();
-        if (bookingID.isEmpty()) {
+        if (BookingIDField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error", "Flight number cannot be empty!");
             return;
         }
+
+        int bookingID = Integer.parseInt(BookingIDField.getText());
 
         Passenger passenger = Session.getPassenger();
         ArrayList<Booking> passengerBookings = passenger.getBookings();

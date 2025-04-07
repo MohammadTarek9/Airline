@@ -3,24 +3,33 @@
 import java.util.ArrayList;
 
 public class Booking {
-    private String bookingID;
+    private int bookingID;
     private Flight flight;
     private Passenger passenger;
     private Boolean isConfirmed;
     private Seat seat;
 
-    public Booking(String bookingID, Flight flight, Passenger passenger, Seat seat) {
+    public Booking(int bookingID, Flight flight, Passenger passenger, Seat seat) {
         this.bookingID = bookingID;
         this.flight = flight;
         this.passenger = passenger;
+        this.seat = seat;
         this.isConfirmed = false;
     }
 
-    public String getBookingID() {
+    public Booking(int bookingID, Flight flight, Passenger passenger, Seat seat, Boolean isConfirmed) {
+        this.bookingID = bookingID;
+        this.flight = flight;
+        this.passenger = passenger;
+        this.isConfirmed = isConfirmed;
+        this.seat = seat;
+    }
+
+    public int getBookingID() {
         return bookingID;
     }
 
-    public void setBookingID(String bookingID) {
+    public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
 
@@ -56,13 +65,16 @@ public class Booking {
         this.seat = seat;
     }
 
-    public boolean confirmBooking() {
-        Payment payment = new Payment(this, flight.calculateFare(seat.getSeatType()));
-        if (payment.processPayment() && flight.bookSeat()) {
+    public boolean confirmBooking(String cardNumber, int ccv) {
+        boolean paymentSuccess = Payment.processPayment(cardNumber, ccv);
+        if (paymentSuccess) {
             this.isConfirmed = true;
+            BookingsModel.updateBookingStatus(this.bookingID, true);
             return true;
+        } else {
+            System.out.println("Payment failed. Please try again.");
+            return false;
         }
-        return false;
     }
         
 

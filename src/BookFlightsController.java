@@ -114,10 +114,7 @@ public class BookFlightsController {
             showAlert(Alert.AlertType.ERROR, "Error", "Please fill in flight number field.");
             return;
         }
-        Flight selectedFlight = flights.getItems().stream()
-                .filter(f -> f.getFlightNumber().equals(flightNumber))
-                .findFirst()
-                .orElse(null);
+        Flight selectedFlight = FlightsModel.getFlightDetails(flightNumber);
 
         if (selectedFlight == null) {
             showAlert(Alert.AlertType.ERROR, "Error", "No matching flight found.");

@@ -148,17 +148,16 @@ public class Flight {
     public double calculateFare(String seatType) {
         double finalFare = baseFare;
 
-        // Adjust fare based on seat type
         switch (seatType.toLowerCase()) {
             case "business":
-                finalFare *= 1.5; // 50% increase for business class
+                finalFare *= 1.5; 
                 break;
             case "first":
-                finalFare *= 2.0; // 100% increase for first class
+                finalFare *= 2.0; 
                 break;
             case "economy":
             default:
-                finalFare *= 1.0; // No change for economy class
+                finalFare *= 1.0; 
                 break;
         }
         return finalFare;
