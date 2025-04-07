@@ -111,14 +111,6 @@ public class Flight {
         this.seats = seats;
     }
 
-    public boolean UpdateAvailableSeats(Seat seat) {
-        if (seats.contains(seat)) {
-            seats.remove(seat);
-            return true;
-        }
-        return false;
-    }
-
     public boolean Delay(String newDepartureTime, String newArrivalTime) {
         if (LocalDateTime.parse(newDepartureTime).isAfter(LocalDateTime.now()) && LocalDateTime.parse(newArrivalTime).isAfter(LocalDateTime.parse(newDepartureTime))) {
             this.departureTime = newDepartureTime;

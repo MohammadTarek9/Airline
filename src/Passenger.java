@@ -125,7 +125,6 @@ public class Passenger {
         boolean r1 = SeatModel.updateSeatAvailability(flight.getFlightNumber(), seat_id, false);
         FlightsModel.incrementBookedSeats(flight.getFlightNumber());
         flight.bookSeat();
-        flight.UpdateAvailableSeats(seat);
         if(!r1) {
             return false;
         }
