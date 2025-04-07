@@ -90,6 +90,58 @@ public class UserModel {
         }
         return null;
     }
+
+    public static String changePassword(String email, String newPassword) {
+        String query = "UPDATE passenger SET password = ? WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newPassword);
+            statement.setString(2, email);
+            statement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error updating password.";
+        }
+    }
+
+    public static String changeEmail(String oldEmail, String newEmail) {
+        String query = "UPDATE passenger SET email = ? WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newEmail);
+            statement.setString(2, oldEmail);
+            statement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error updating email.";
+        }
+    }
+
+    public static String changePhone(String email, String newPhone) {
+        String query = "UPDATE passenger SET phone = ? WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newPhone);
+            statement.setString(2, email);
+            statement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error updating phone number.";
+        }
+    }
+
+    public static String changeAge(String email, int newAge) {
+        String query = "UPDATE passenger SET age = ? WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newAge);
+            statement.setString(2, email);
+            statement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error updating age.";
+        }
+    }
     
     
 }

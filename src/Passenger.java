@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import javafx.scene.control.Alert;
+
 public class Passenger {
     private String firstName;
     private String lastName;
@@ -217,9 +219,89 @@ public class Passenger {
         
         return result;
     }
-    //not implemented yet
-    public static String updateAccount(String email, String password, String phoneNumber, String ageStr) {
+    
+    public String updateAccount(String oldEmail, String newEmail, String newPassword, String confirmPassword, String newPhoneNumber, String newAge) {
         String result = "success";
+        boolean emailChanged = false;
+        if(!newEmail.isEmpty()){
+            if(newEmail.equals(oldEmail)){
+                result = "New email cannot be the same as the old email!";
+            }
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            if (!Pattern.matches(emailRegex, newEmail)) {
+                result = "Invalid email format!";
+            }
+            if(UserModel.isEmailExists(newEmail)) {
+                result = "Email already exists!";
+            }
+            String emailChangeResult = UserModel.changeEmail(oldEmail, newEmail);
+
+            if(!emailChangeResult.equals("success")){
+                result = "Failed to update email!";
+            }
+            else{
+                emailChanged = true;
+                this.setEmail(newEmail);
+            }
+        }
+
+        if(!newPassword.isEmpty()){
+            if(newPassword.equals(this.getPassword())){
+                result = "New password cannot be the same as the old password!";
+            }
+            if(newPassword.length() < 6){
+                result = "Password must be at least 6 characters long!";
+            }
+            if(newPassword.equals(confirmPassword)){
+                String email = emailChanged ? newEmail : oldEmail;
+                String passwordChangeResult = UserModel.changePassword(email, newPassword);
+                if(!passwordChangeResult.equals("success")){
+                    result = "Failed to update password!";
+                }
+                else{
+                    this.setPassword(newPassword);
+                }
+            } else {
+                result = "Passwords do not match!";
+            }
+        }
+        if(!newPhoneNumber.isEmpty()){
+            if(newPhoneNumber.equals(this.getPhone())){
+                result = "New phone number cannot be the same as the old phone number!";
+            }
+            String phoneRegex = "^\\+\\d{1,3}\\d{9,13}$"; 
+            if (!Pattern.matches(phoneRegex, newPhoneNumber)) {
+                result = "Invalid phone number format!";
+            }
+            String email = emailChanged ? newEmail : oldEmail;
+            String phoneChangeResult = UserModel.changePhone(email, newPhoneNumber);
+            if(!phoneChangeResult.equals("success")){
+                result = "Failed to update phone number!";
+            }
+            else{
+                this.setPhone(newPhoneNumber);
+            }
+        }
+        if(!newAge.isEmpty() ){
+            if(newAge.equals(String.valueOf(this.getAge()))){
+                result = "New age cannot be the same as the old age!";
+            }
+            if(newAge.equals(String.valueOf(this.getAge()))){
+                result = "New age cannot be the same as the old age!";
+            }
+            if (!newAge.matches("\\d+")) {
+                result = "Age must be a number!";
+            }
+            int age = Integer.parseInt(newAge);
+            String email = emailChanged ? newEmail : oldEmail;
+            String ageChangeResult = UserModel.changeAge(email, age);
+            if(!ageChangeResult.equals("success")){
+                result = "Failed to update age!";
+            }
+            else{
+                this.setAge(age);
+            }
+        }
         return result;
     }
 }

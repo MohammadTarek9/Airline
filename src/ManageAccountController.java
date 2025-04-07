@@ -1,3 +1,4 @@
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,15 +101,26 @@ public class ManageAccountController {
         passwdField.clear();
         confPasswdField.clear();
     }
-    //not implemented yet
+    
     @FXML
     void saveData(ActionEvent event) {
-        String email = emailField.getText();
-        String password = passwdField.getText();
+        String newEmail = emailField.getText();
+        String newPassword = passwdField.getText();
         String confirmPassword = confPasswdField.getText();
-        String phoneNumber = PhoneNumField.getText();
-        String age = AgeField.getText();
+        String newPhoneNumber = PhoneNumField.getText();
+        String newAge = AgeField.getText();
 
+        Passenger passenger = Session.getPassenger();
+
+        String oldEmail = passenger.getEmail();
+
+        String result = passenger.updateAccount(oldEmail, newEmail, newPassword, confirmPassword, newPhoneNumber, newAge);
+
+        if(result.equals("success")){
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Account updated successfully!");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", result);
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
