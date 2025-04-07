@@ -22,9 +22,6 @@ public class Flight {
         this.arrivalTime = arrivalTime;
         this.baseFare = fare;
         this.seats = new ArrayList<>();
-        for (int i = 1; i <= capacity; i++) {
-            seats.add(new Seat("S" + i));
-        }
     }
 
     public Flight(String flightNumber, int capacity, String source, String destination, String departureTime, String arrivalTime, double fare) {
