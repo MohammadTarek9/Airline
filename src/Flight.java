@@ -154,6 +154,20 @@ public class Flight {
         return flights;
     }
 
+    public String handleDelays() {
+        boolean isDelayed = FlightsModel.checkIfDelayed(this.flightNumber);
+        if(isDelayed) {
+            String delayReason = FlightsModel.getDelayReason(this.flightNumber);
+            return delayReason;
+        }
+        return "nothing";
+    }
+
+    public boolean isCancelled() {
+        Flight cancelledFlight = FlightsModel.getFlightDetails(this.flightNumber);
+        return cancelledFlight == null;
+    }
+
     public void displayFlightDetails() {
         System.out.println("Flight Number: " + flightNumber);
         System.out.println("Capacity: " + capacity);

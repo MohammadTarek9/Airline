@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<ScrollPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BookingDetailsController">
+<ScrollPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BookingDetailsController">
    <content>
       <AnchorPane prefHeight="798.0" prefWidth="1150.0">
       

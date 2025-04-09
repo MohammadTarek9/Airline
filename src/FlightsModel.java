@@ -92,4 +92,32 @@ public class FlightsModel {
             e.printStackTrace();
         }
     }
+
+    public static boolean checkIfDelayed(String flightNumber) {
+        String query = "SELECT isDelayed FROM flight WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getBoolean("isDelayed");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String getDelayReason(String flightNumber) {
+        String query = "SELECT delayReason FROM flight WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("delayReason");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
