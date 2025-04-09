@@ -1,8 +1,8 @@
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,7 +37,7 @@ public class BookingDetailsController {
         displaySeats(seats);
     
         // Display flight info
-        Flight flight = FlightsModel.getFlightDetails(flightNumber); 
+        Flight flight = FlightsModel.getFlightDetails(flightNumber);
         if (flight != null) {
             flightNum.setText(flight.getFlightNumber());
             fareID.setText(String.valueOf(flight.getBaseFare()));
@@ -91,7 +91,7 @@ void GoToManageAccount(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        ((Button) event.getSource()).getScene().setRoot(root);
         stage.setTitle("Manage Account");
         stage.setResizable(false);
         stage.show();
@@ -106,7 +106,7 @@ void GoToUpdates(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        ((Button) event.getSource()).getScene().setRoot(root);
         stage.setTitle("Updates");
         stage.setResizable(false);
         stage.show();
@@ -123,8 +123,8 @@ void GoToUpdates(ActionEvent event) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            ((Button) event.getSource()).getScene().setRoot(root);
             stage.setTitle("Cancel Flights");
-            stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
         }
@@ -156,18 +156,14 @@ void GoTopayment(ActionEvent event) {
         showAlert(Alert.AlertType.ERROR, "Error", "Booking failed. Please try again.");
         return;
         }
-    // Passenger passenger = Session.getPassenger();
-    // passenger.addBooking(booking); 
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Payment.fxml"));
         Parent root = loader.load();
 
         PaymentController controller = loader.getController();
-        // controller.setSeatAndFlight(seatID.getText(), flightNum.getText());
-
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setTitle("Payment");
-        stage.setScene(new Scene(root));
+        ((Button) event.getSource()).getScene().setRoot(root);
         stage.setResizable(false);
         stage.show();
     } catch (Exception e) {

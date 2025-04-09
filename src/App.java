@@ -1,15 +1,10 @@
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+import java.io.IOException;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -19,6 +14,8 @@ public class App extends Application {
         try {
             root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
             Scene scene = new Scene(root);
+            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("logo.png")));
+            primaryStage.setMaximized(true);
             primaryStage.setTitle("FlyOps - Sign Up");
             primaryStage.setScene(scene);
             primaryStage.show();

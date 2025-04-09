@@ -1,10 +1,7 @@
-//package org.example;
-import java.lang.reflect.Array;
-import java.sql.PreparedStatement;
+
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import javafx.scene.control.Alert;
 
 public class Passenger {
     private String firstName;

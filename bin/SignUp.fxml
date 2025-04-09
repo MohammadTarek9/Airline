@@ -1,147 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpController">
     <right>
-        <HBox prefHeight="598.0" prefWidth="304.0" style="-fx-background-color: #1A3E76;" BorderPane.alignment="CENTER">
-            <children>
-                <VBox prefHeight="598.0" prefWidth="358.0">
-                    <children>
-                        <Text fill="WHITE" fontSmoothingType="LCD" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" textAlignment="CENTER" translateY="186.0" wrappingWidth="305.9609375" y="200.0">
+          <VBox prefHeight="598.0" prefWidth="358.0" style="-fx-background-color: #1A3E76;">
+              <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                        <Text fill="WHITE" fontSmoothingType="LCD" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" textAlignment="CENTER" wrappingWidth="305.9609375" y="200.0" StackPane.alignment="CENTER">
                             <font>
                                 <Font name="System Bold Italic" size="23.0" />
                             </font>
+                     <StackPane.margin>
+                        <Insets bottom="50.0" />
+                     </StackPane.margin>
                         </Text>
-                        <Button fx:id="LoginBtn" mnemonicParsing="false" onAction="#GoToLogin" prefHeight="26.0" prefWidth="135.0" style="-fx-background-color: #FFFFFF;" text="Log In" textAlignment="CENTER" textFill="#1a3e76" translateX="85.0" translateY="205.0">
+                        <Button fx:id="LoginBtn" mnemonicParsing="false" onAction="#GoToLogin" prefHeight="26.0" prefWidth="135.0" style="-fx-background-color: #FFFFFF;" text="Log In" textAlignment="CENTER" textFill="#1a3e76" StackPane.alignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="21.0" />
                             </font>
+                     <StackPane.margin>
+                        <Insets top="80.0" />
+                     </StackPane.margin>
                         </Button>
-                        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="10.0" layoutY="-164.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="And enjoy our services!" textAlignment="CENTER" translateX="14.0" translateY="226.0" wrappingWidth="281.9609375" y="200.0">
+                        <Text fill="WHITE" fontSmoothingType="LCD" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="And enjoy our services!" textAlignment="CENTER" wrappingWidth="281.9609375" y="200.0" StackPane.alignment="CENTER">
                             <font>
                                 <Font name="System Bold Italic" size="23.0" />
                             </font>
+                     <StackPane.margin>
+                        <Insets top="200.0" />
+                     </StackPane.margin>
                         </Text>
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
+               </children>
+            </StackPane>
+              </children>
+          </VBox>
     </right>
     <center>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <AnchorPane prefHeight="598.0" prefWidth="583.0">
-                    <children>
-                        <Text layoutX="200.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="177.9609375">
-                            <font>
-                                <Font name="System Bold Italic" size="28.0" />
-                            </font>
-                        </Text>
-                        <Text fill="#1a3e76" layoutX="-7.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FlyOps" textAlignment="CENTER" wrappingWidth="181.9608154296875">
-                            <font>
-                                <Font name="Helvetica Bold" size="48.0" />
-                            </font>
-                        </Text>
-                        <VBox layoutX="62.0" layoutY="149.0" prefHeight="351.0" prefWidth="454.0">
-                            <children>
-                                <Label alignment="TOP_CENTER" prefHeight="14.0" prefWidth="454.0" text="FIRST NAME">
-                                    <font>
-                                        <Font name="System Bold" size="16.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="FNameField" prefHeight="29.0" prefWidth="454.0" promptText="Enter First Name">
-                                    <font>
-                                        <Font name="System Italic" size="13.0" />
-                                    </font>
-                                    <effect>
-                                        <Glow />
-                                    </effect>
-                                </TextField>
-                                <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="454.0" text="LAST NAME">
-                                    <font>
-                                        <Font name="System Bold" size="16.0" />
-                                    </font>
-                                </Label>
-                        <TextField fx:id="LNameField" layoutX="10.0" layoutY="36.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter Last Name">
-                           <font>
-                              <Font name="System Italic" size="13.0" />
-                           </font>
-                           <effect>
-                              <Glow />
-                           </effect>
-                        </TextField>
-                        <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="72.0" prefHeight="18.0" prefWidth="454.0" text="AGE">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="AgeField" layoutX="10.0" layoutY="91.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter your Age">
-                           <font>
-                              <Font name="System Italic" size="13.0" />
-                           </font>
-                           <effect>
-                              <Glow />
-                           </effect>
-                        </TextField>
-                        <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="120.0" prefHeight="18.0" prefWidth="454.0" text="PHONE NUMBER">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="PhoneNumField" layoutX="10.0" layoutY="146.0" prefHeight="29.0" prefWidth="454.0" promptText="your phone number in following format: +(CountryCode)(Number)">
-                           <font>
-                              <Font name="System Italic" size="13.0" />
-                           </font>
-                           <effect>
-                              <Glow />
-                           </effect>
-                        </TextField>
-                        <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="176.0" prefHeight="18.0" prefWidth="454.0" text="EMAIL">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="EmailField" layoutX="10.0" layoutY="36.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter email">
-                           <font>
-                              <Font name="System Italic" size="13.0" />
-                           </font>
-                           <effect>
-                              <Glow />
-                           </effect>
-                        </TextField>
-                        <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="231.0" prefHeight="18.0" prefWidth="454.0" text="PASSWORD">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="PasswdField" layoutX="10.0" layoutY="256.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter password">
-                           <font>
-                              <Font name="System Italic" size="13.0" />
-                           </font>
-                           <effect>
-                              <Glow />
-                           </effect>
-                        </TextField>
-                            </children>
-                        </VBox>
-                        <Button fx:id="SignUpBtn" layoutX="169.0" layoutY="509.0" mnemonicParsing="false" onAction="#HandleSignUp" prefHeight="47.0" prefWidth="241.0" style="-fx-background-color: #1A3E76;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="22.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </AnchorPane>
-            </children>
-        </HBox>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="177.9609375" StackPane.alignment="TOP_CENTER">
+                      <font>
+                          <Font name="System Bold Italic" size="28.0" />
+                      </font>
+               <StackPane.margin>
+                  <Insets top="90.0" />
+               </StackPane.margin>
+                  </Text>
+                  <Text fill="#1a3e76" strokeType="OUTSIDE" strokeWidth="0.0" text="FlyOps" textAlignment="CENTER" wrappingWidth="181.9608154296875" StackPane.alignment="TOP_LEFT">
+                      <font>
+                          <Font name="Helvetica Bold" size="48.0" />
+                      </font>
+                  </Text>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="351.0" prefWidth="454.0" StackPane.alignment="CENTER">
+                      <children>
+                          <Label alignment="TOP_CENTER" prefHeight="14.0" prefWidth="454.0" text="FIRST NAME">
+                              <font>
+                                  <Font name="System Bold" size="16.0" />
+                              </font>
+                          </Label>
+                          <TextField fx:id="FNameField" prefHeight="29.0" prefWidth="454.0" promptText="Enter First Name">
+                              <font>
+                                  <Font name="System Italic" size="13.0" />
+                              </font>
+                              <effect>
+                                  <Glow />
+                              </effect>
+                          </TextField>
+                          <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="454.0" text="LAST NAME">
+                              <font>
+                                  <Font name="System Bold" size="16.0" />
+                              </font>
+                          </Label>
+                  <TextField fx:id="LNameField" layoutX="10.0" layoutY="36.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter Last Name">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+                  <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="72.0" prefHeight="18.0" prefWidth="454.0" text="AGE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="AgeField" layoutX="10.0" layoutY="91.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter your Age">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+                  <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="120.0" prefHeight="18.0" prefWidth="454.0" text="PHONE NUMBER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="PhoneNumField" layoutX="10.0" layoutY="146.0" prefHeight="29.0" prefWidth="454.0" promptText="your phone number in following format: +(CountryCode)(Number)">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+                  <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="176.0" prefHeight="18.0" prefWidth="454.0" text="EMAIL">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="EmailField" layoutX="10.0" layoutY="36.0" prefHeight="29.0" prefWidth="454.0" promptText="Enter email">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+                  <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="231.0" prefHeight="18.0" prefWidth="454.0" text="PASSWORD">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="PasswdField" prefHeight="29.0" prefWidth="454.0" promptText="Enter password">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </PasswordField>
+                      </children>
+               <StackPane.margin>
+                  <Insets top="50.0" />
+               </StackPane.margin>
+                  </VBox>
+                  <Button fx:id="SignUpBtn" mnemonicParsing="false" onAction="#HandleSignUp" prefHeight="47.0" prefWidth="241.0" style="-fx-background-color: #1A3E76;" text="Sign Up" textAlignment="CENTER" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
+                      <font>
+                          <Font name="System Bold" size="22.0" />
+                      </font>
+               <StackPane.margin>
+                  <Insets bottom="40.0" />
+               </StackPane.margin>
+                  </Button>
+         </children>
+      </StackPane>
     </center>
 </BorderPane>

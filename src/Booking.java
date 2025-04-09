@@ -1,6 +1,6 @@
-//package org.example;
 
-import java.util.ArrayList;
+
+import java.time.LocalDate;
 
 public class Booking {
     private int bookingID;
@@ -65,7 +65,11 @@ public class Booking {
         this.seat = seat;
     }
 
-    public boolean confirmBooking(String cardNumber, int ccv) {
+    public boolean confirmBooking(String cardNumber, int ccv, LocalDate date) {
+        if (date.isBefore(LocalDate.now())) {
+            System.out.println("Bad Date!");
+            return false;
+        }
         boolean paymentSuccess = Payment.processPayment(cardNumber, ccv);
         if (paymentSuccess) {
             this.isConfirmed = true;

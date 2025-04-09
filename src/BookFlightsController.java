@@ -1,3 +1,4 @@
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -5,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -14,9 +14,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-import java.util.Observable;
-
-import com.mysql.cj.xdevapi.Table;
 
 public class BookFlightsController {
 
@@ -60,8 +57,7 @@ public class BookFlightsController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) CancelFlightBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            CancelFlightBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Cancel Flight");
             stage.show();
         }
@@ -78,8 +74,7 @@ public class BookFlightsController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) AccountBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            AccountBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - HomePage");
             stage.show();
         }
@@ -96,8 +91,7 @@ public class BookFlightsController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) UpdatesBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            UpdatesBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Updates");
             stage.show();
         }
@@ -132,7 +126,7 @@ public class BookFlightsController {
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Booking details");
-            stage.setScene(new Scene(root));
+            ((Button) event.getSource()).getScene().setRoot(root);
             stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
@@ -146,11 +140,8 @@ public class BookFlightsController {
         String source = SourceField.getText();
         String destination = DestinationField.getText();
         String date = null;
-        //System.out.println(source + " " + destination);
         if(DateField.getValue()!=null){
-            //System.out.println(DateField.getValue());
             date = DateField.getValue().toString();
-            //System.out.println(date);
         }
 
         if(source.isEmpty() || destination.isEmpty()){
@@ -167,8 +158,26 @@ public class BookFlightsController {
             return;
         }
 
+        drawTable(availableFlights);
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+
+    }
+
+    @FXML
+    private void initialize() {
+        drawTable(Flight.getAllFlights());
+    }
+
+    private void drawTable(ArrayList<Flight> availableFlights) {
         flights.getColumns().clear();
-        
+
         ObservableList<Flight> flightData = FXCollections.observableArrayList(availableFlights);
         TableColumn<Flight, String> flightColumn = new TableColumn<>("Flight Number");
         flightColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
@@ -188,23 +197,11 @@ public class BookFlightsController {
         TableColumn<Flight, String> bookedSeatsColumn = new TableColumn<>("Booked Seats");
         bookedSeatsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getBookedSeats())));
 
+
         flights.getColumns().addAll(flightColumn, departureTimeColumn, arrivalTimeColumn, fareColumn, capacityColumn, bookedSeatsColumn);
 
 
         flights.setItems(flightData);
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-
-
     }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-
-    }
-
 }

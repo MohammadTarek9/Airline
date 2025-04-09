@@ -1,8 +1,8 @@
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.ArrayList;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -74,7 +73,6 @@ public class CancelFlightController implements Initializable {
         flights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Passenger passenger = Session.getPassenger();
-        //ArrayList<Booking> bookings = passenger.fetchBookings();
         ArrayList<Booking> bookings = passenger.getBookings();
         ArrayList<Flight> allFlights = new ArrayList<>();
         for (Booking booking : bookings) {
@@ -94,8 +92,7 @@ public class CancelFlightController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ManageAccBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            ManageAccBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Manage Account");
             stage.show();
         }
@@ -112,8 +109,7 @@ public class CancelFlightController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookFlights.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) BookFlightBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            BookFlightBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Book Flight");
             stage.show();
         }
@@ -130,8 +126,7 @@ public class CancelFlightController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) UpdatesBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            UpdatesBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Updates");
             stage.show();
         }

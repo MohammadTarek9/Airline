@@ -4,6 +4,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,126 +14,131 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaymentController">
-    <children>
-        <ImageView fitHeight="815.0" fitWidth="1036.0" layoutX="114.0" layoutY="-5.0" opacity="0.37">
-            <image>
-                <Image url="@pngimg.com_-_world_map_PNG2.png" />
-            </image>
-        </ImageView>
-        <HBox prefHeight="798.0" prefWidth="106.0" style="-fx-background-color: #1A3E76;">
-            <children>
-                <VBox prefHeight="798.0" prefWidth="101.0">
-                    <children>
-                        <ImageView fitHeight="101.0" fitWidth="103.0" opacity="0.3" preserveRatio="true" translateX="6.0" translateY="27.0">
-                            <image>
-                                <Image url="@AccountLogo.png" />
-                            </image>
-                        </ImageView>
-                        <Button fx:id="AccountBtn" mnemonicParsing="false" onAction="#GoToManageAccount" opacity="0.3" style="-fx-background-color: #1A3E76;" text="Account" textFill="WHITE" translateX="5.0" translateY="32.0">
-                            <font>
-                                <Font name="System Bold Italic" size="20.0" />
-                            </font>
-                        </Button>
-                        <ImageView fitHeight="120.0" fitWidth="111.0" translateX="3.0" translateY="48.0">
-                            <image>
-                                <Image url="@BookFlight.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="89.0" fitWidth="97.0" opacity="0.3" preserveRatio="true" translateX="8.0" translateY="158.0">
-                            <image>
-                                <Image url="@CancelBooking.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="106.0" fitWidth="116.0" opacity="0.3" translateY="252.0">
-                            <image>
-                                <Image url="@Updates.png" />
-                            </image>
-                        </ImageView>
-                        <Button fx:id="BookFlightsBtn" layoutX="10.0" layoutY="115.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Book Flight" textAlignment="CENTER" textFill="WHITE" translateX="-1.0" translateY="-147.0" wrapText="true">
-                            <font>
-                                <Font name="System Bold Italic" size="20.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="CancelFlightBtn" layoutX="10.0" layoutY="498.0" mnemonicParsing="false" onAction="#GoToCancelFlight" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Cancel Flight" textAlignment="CENTER" textFill="WHITE" translateY="-16.0" wrapText="true">
-                            <font>
-                                <Font name="System Bold Italic" size="20.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="UpdatesBtn" layoutX="10.0" layoutY="545.0" mnemonicParsing="false" onAction="#GoToUpdates" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Updates" textAlignment="CENTER" textFill="WHITE" translateY="100.0" wrapText="true">
-                            <font>
-                                <Font name="System Bold Italic" size="20.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
-      <Text fill="#1a3e76" layoutX="149.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment Information" textAlignment="CENTER" underline="true">
-         <font>
-            <Font name="System Bold Italic" size="35.0" />
-         </font>
-      </Text>
-      <Text layoutX="165.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CC Number">
-         <font>
-            <Font name="System Bold Italic" size="30.0" />
-         </font>
-      </Text>
-      <TextField fx:id="CCNumber" layoutX="161.0" layoutY="261.0" prefHeight="35.0" prefWidth="365.0" promptText="enter credit card number">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Text layoutX="165.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CC Holder Name">
-         <font>
-            <Font name="System Bold Italic" size="30.0" />
-         </font>
-      </Text>
-      <TextField fx:id="CCHolderName" layoutX="161.0" layoutY="399.0" prefHeight="35.0" prefWidth="365.0" promptText="enter credit card holder name">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Text layoutX="165.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiration Date">
-         <font>
-            <Font name="System Bold Italic" size="30.0" />
-         </font>
-      </Text>
-      <DatePicker fx:id="ExDate" layoutX="161.0" layoutY="542.0" prefHeight="35.0" prefWidth="264.0" />
-      <Text layoutX="161.0" layoutY="647.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CCV">
-         <font>
-            <Font name="System Bold Italic" size="30.0" />
-         </font>
-      </Text>
-      <PasswordField fx:id="CCV" layoutX="161.0" layoutY="680.0" prefHeight="35.0" prefWidth="121.0" promptText="enter ccv">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </PasswordField>
-      <Button layoutX="774.0" layoutY="665.0" mnemonicParsing="false" onAction="#clearPaymentFields" prefHeight="62.0" prefWidth="141.0" style="-fx-background-color: #1a3e76;" text="Clear" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="29.0" />
-         </font>
-      </Button>
-      <Button layoutX="969.0" layoutY="665.0" mnemonicParsing="false" onAction="#handlePayment" prefHeight="62.0" prefWidth="141.0" style="-fx-background-color: #1a3e76;" text="Pay" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="29.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="340.0" fitWidth="372.0" layoutX="765.0" layoutY="201.0" preserveRatio="true">
-         <image>
-            <Image url="@CreditCard.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="149.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount to be paid:  ">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Text>
-      <Label fx:id="amount" layoutX="433.0" layoutY="89.0" prefHeight="35.0" prefWidth="156.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-    </children>
-</AnchorPane>
+
+<ScrollPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaymentController">
+   <content>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1150.0">
+          <children>
+              <ImageView fitHeight="815.0" fitWidth="1036.0" layoutX="114.0" layoutY="-5.0" opacity="0.37">
+                  <image>
+                      <Image url="@pngimg.com_-_world_map_PNG2.png" />
+                  </image>
+              </ImageView>
+              <HBox prefHeight="798.0" prefWidth="106.0" style="-fx-background-color: #1A3E76;">
+                  <children>
+                      <VBox prefHeight="798.0" prefWidth="101.0">
+                          <children>
+                              <ImageView fitHeight="101.0" fitWidth="103.0" opacity="0.3" preserveRatio="true" translateX="6.0" translateY="27.0">
+                                  <image>
+                                      <Image url="@AccountLogo.png" />
+                                  </image>
+                              </ImageView>
+                              <Button fx:id="AccountBtn" mnemonicParsing="false" onAction="#GoToManageAccount" opacity="0.3" style="-fx-background-color: #1A3E76;" text="Account" textFill="WHITE" translateX="5.0" translateY="32.0">
+                                  <font>
+                                      <Font name="System Bold Italic" size="20.0" />
+                                  </font>
+                              </Button>
+                              <ImageView fitHeight="120.0" fitWidth="111.0" translateX="3.0" translateY="48.0">
+                                  <image>
+                                      <Image url="@BookFlight.png" />
+                                  </image>
+                              </ImageView>
+                              <ImageView fitHeight="89.0" fitWidth="97.0" opacity="0.3" preserveRatio="true" translateX="8.0" translateY="158.0">
+                                  <image>
+                                      <Image url="@CancelBooking.png" />
+                                  </image>
+                              </ImageView>
+                              <ImageView fitHeight="106.0" fitWidth="116.0" opacity="0.3" translateY="252.0">
+                                  <image>
+                                      <Image url="@Updates.png" />
+                                  </image>
+                              </ImageView>
+                              <Button fx:id="BookFlightsBtn" layoutX="10.0" layoutY="115.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Book Flight" textAlignment="CENTER" textFill="WHITE" translateX="-1.0" translateY="-147.0" wrapText="true">
+                                  <font>
+                                      <Font name="System Bold Italic" size="20.0" />
+                                  </font>
+                              </Button>
+                              <Button fx:id="CancelFlightBtn" layoutX="10.0" layoutY="498.0" mnemonicParsing="false" onAction="#GoToCancelFlight" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Cancel Flight" textAlignment="CENTER" textFill="WHITE" translateY="-16.0" wrapText="true">
+                                  <font>
+                                      <Font name="System Bold Italic" size="20.0" />
+                                  </font>
+                              </Button>
+                              <Button fx:id="UpdatesBtn" layoutX="10.0" layoutY="545.0" mnemonicParsing="false" onAction="#GoToUpdates" opacity="0.3" prefHeight="74.0" prefWidth="116.0" style="-fx-background-color: #1A3E76;" text="Updates" textAlignment="CENTER" textFill="WHITE" translateY="100.0" wrapText="true">
+                                  <font>
+                                      <Font name="System Bold Italic" size="20.0" />
+                                  </font>
+                              </Button>
+                          </children>
+                      </VBox>
+                  </children>
+              </HBox>
+            <Text fill="#1a3e76" layoutX="149.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment Information" textAlignment="CENTER" underline="true">
+               <font>
+                  <Font name="System Bold Italic" size="35.0" />
+               </font>
+            </Text>
+            <Text layoutX="165.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CC Number">
+               <font>
+                  <Font name="System Bold Italic" size="30.0" />
+               </font>
+            </Text>
+            <TextField fx:id="CCNumber" layoutX="161.0" layoutY="261.0" prefHeight="35.0" prefWidth="365.0" promptText="enter credit card number">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <Text layoutX="165.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CC Holder Name">
+               <font>
+                  <Font name="System Bold Italic" size="30.0" />
+               </font>
+            </Text>
+            <TextField fx:id="CCHolderName" layoutX="161.0" layoutY="399.0" prefHeight="35.0" prefWidth="365.0" promptText="enter credit card holder name">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <Text layoutX="165.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiration Date">
+               <font>
+                  <Font name="System Bold Italic" size="30.0" />
+               </font>
+            </Text>
+            <DatePicker fx:id="ExDate" layoutX="161.0" layoutY="542.0" prefHeight="35.0" prefWidth="264.0" />
+            <Text layoutX="161.0" layoutY="647.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CCV">
+               <font>
+                  <Font name="System Bold Italic" size="30.0" />
+               </font>
+            </Text>
+            <PasswordField fx:id="CCV" layoutX="161.0" layoutY="680.0" prefHeight="35.0" prefWidth="121.0" promptText="enter ccv">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </PasswordField>
+            <Button layoutX="774.0" layoutY="665.0" mnemonicParsing="false" onAction="#clearPaymentFields" prefHeight="62.0" prefWidth="141.0" style="-fx-background-color: #1a3e76;" text="Clear" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Button>
+            <Button layoutX="969.0" layoutY="665.0" mnemonicParsing="false" onAction="#handlePayment" prefHeight="62.0" prefWidth="141.0" style="-fx-background-color: #1a3e76;" text="Pay" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="340.0" fitWidth="372.0" layoutX="765.0" layoutY="201.0" preserveRatio="true">
+               <image>
+                  <Image url="@CreditCard.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="149.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount to be paid:  ">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+            <Label fx:id="amount" layoutX="433.0" layoutY="89.0" prefHeight="35.0" prefWidth="156.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+          </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

@@ -1,10 +1,11 @@
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.sql.Statement;
 
 public class BookingsModel {
@@ -53,31 +54,6 @@ public class BookingsModel {
 
 
     }
-
-
-    // public static ArrayList<Booking> findAllBookings() {
-    //     ArrayList<Booking> bookings = new ArrayList<>();
-    //     String query = "SELECT * FROM booking WHERE isConfirmed = 1";
-    //     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-    //         ResultSet resultSet = preparedStatement.executeQuery();
-    //         while (resultSet.next()) {
-    //             String flightNumber = resultSet.getString("flightNumber");
-    //             String bookingId = resultSet.getString("bookingID");
-    //             String passengerEmail = resultSet.getString("email");
-    //             String seat_id = resultSet.getString("seat_id");
-    //             Passenger passenger = UserModel.getPassengerDetails(passengerEmail);
-    //             Flight flight = FlightsModel.getFlightDetails(flightNumber);
-    //             Seat seat = new Seat(seat_id, false, resultSet.getString("seatType")); 
-    //             Booking booking = new Booking(bookingId, flight, passenger, seat);
-    //             bookings.add(booking);
-    //         }
-
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-    //     return bookings;
-    // }
 
     public static boolean deleteBooking(int bookingId) {
         String query = "DELETE FROM booking WHERE bookingID = ?";

@@ -1,8 +1,8 @@
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.scene.control.Label;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class PaymentController implements Initializable {
@@ -59,14 +60,6 @@ private void showAlert(Alert.AlertType alertType, String title, String message) 
     alert.setContentText(message);
     alert.showAndWait();
 }
-// used for setting variables from previous scene
-// private String seatId;
-// private String flightNumber;
-
-// public void setSeatAndFlight(String seatId, String flightNumber) {
-//     this.seatId = seatId;
-//     this.flightNumber = flightNumber;
-// }
 
 @FXML
 private void handlePayment(ActionEvent event) {
@@ -81,13 +74,15 @@ private void handlePayment(ActionEvent event) {
     }
     String cardNumber = CCNumber.getText();
     int ccv = Integer.parseInt(CCV.getText());
+    LocalDate date = ExDate.getValue();
     Booking currentBooking = Session.getPassenger().getBookings().get(Session.getPassenger().getBookings().size() - 1);
-    boolean confirmed = currentBooking.confirmBooking(cardNumber, ccv);
+    boolean confirmed = currentBooking.confirmBooking(cardNumber, ccv, date);
     if (confirmed) {
         showAlert(Alert.AlertType.INFORMATION, "Success", "Payment successful! Booking confirmed.");
         clearPaymentFields();
     } else {
         showAlert(Alert.AlertType.ERROR, "Error", "Payment failed. Please try again.");
+        return;
     }
 
     try {
@@ -98,6 +93,7 @@ private void handlePayment(ActionEvent event) {
         stage.setTitle("Boarding Pass");
         stage.setResizable(false);
         stage.show();
+        GoToCancelFlight(event);
     } catch (IOException e) {
         e.printStackTrace();
     }
@@ -109,7 +105,7 @@ void GoToManageAccount(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        ((Button) event.getSource()).getScene().setRoot(root);
         stage.setTitle("Manage Account");
         stage.setResizable(false);
         stage.show();
@@ -124,7 +120,7 @@ void GoToUpdates(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        ((Button) event.getSource()).getScene().setRoot(root);
         stage.setTitle("Updates");
         stage.setResizable(false);
         stage.show();
@@ -141,7 +137,7 @@ void GoToUpdates(ActionEvent event) {
             Parent root = loader.load();
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Cancel Flights");
-            stage.setScene(new Scene(root));
+            ((Button) event.getSource()).getScene().setRoot(root);
             stage.setResizable(false);
             stage.show();
         }

@@ -1,11 +1,11 @@
-import java.util.regex.Pattern;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 public class ManageAccountController {
@@ -31,13 +31,13 @@ public class ManageAccountController {
     private Button clearBtn;
 
     @FXML
-    private TextField confPasswdField;
+    private PasswordField confPasswdField;
 
     @FXML
     private TextField emailField;
 
     @FXML
-    private TextField passwdField;
+    private PasswordField passwdField;
 
     @FXML
     private Button saveBtn;
@@ -48,8 +48,7 @@ public class ManageAccountController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookFlights.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) BookFlightBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            BookFlightBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Book Flight");
             stage.show();
         }
@@ -65,8 +64,7 @@ public class ManageAccountController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) CancelFlightBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            CancelFlightBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Cancel Flight");
             stage.show();
         }
@@ -82,8 +80,7 @@ public class ManageAccountController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Updates.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) UpdatesBtn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            UpdatesBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Updates");
             stage.show();
         }
@@ -109,6 +106,12 @@ public class ManageAccountController {
         String confirmPassword = confPasswdField.getText();
         String newPhoneNumber = PhoneNumField.getText();
         String newAge = AgeField.getText();
+        System.out.println(newPassword);
+        System.out.println(confirmPassword);
+        if (!newPassword.equals(confirmPassword)){
+            showAlert(Alert.AlertType.ERROR, "Error", "Passwords does not match!");
+            return;
+        }
 
         Passenger passenger = Session.getPassenger();
 
