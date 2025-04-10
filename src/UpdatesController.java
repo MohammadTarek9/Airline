@@ -1,53 +1,3 @@
-
-
-//     @FXML
-//     void GoToBookFlight(ActionEvent event) {
-
-//         try {
-//             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookFlights.fxml"));
-//             Parent root = loader.load();
-//             Stage stage = (Stage) BookFlightBtn.getScene().getWindow();
-//             BookFlightBtn.getScene().setRoot(root);
-//             stage.setTitle("FlyOps - Book Flight");
-//             stage.show();
-//         } catch (Exception e) {
-//             e.printStackTrace();
-//         }
-
-//     }
-
-//     @FXML
-//     void GoToCancelFlight(ActionEvent event) {
-
-//         try {
-//             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
-//             Parent root = loader.load();
-//             Stage stage = (Stage) CancelFlightBtn.getScene().getWindow();
-//             CancelFlightBtn.getScene().setRoot(root);
-//             stage.setTitle("FlyOps - Cancel Flight");
-//             stage.show();
-//         } catch (Exception e) {
-//             e.printStackTrace();
-//         }
-
-//     }
-
-//     @FXML
-//     void GoToManageAccount(ActionEvent event) {
-
-//         try {
-//             FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
-//             Parent root = loader.load();
-//             Stage stage = (Stage) ManageAccountBtn.getScene().getWindow();
-//             ManageAccountBtn.getScene().setRoot(root);
-//             stage.setTitle("FlyOps - Manage Account");
-//             stage.show();
-//         } catch (Exception e) {
-//             e.printStackTrace();
-//         }
-
-//     }
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -100,30 +50,36 @@ public class UpdatesController implements Initializable {
         else{
             boolean cancellationFound = false;
             boolean delayFound = false;
+            StringBuilder delayMessage = new StringBuilder();
+            StringBuilder cancelationMessage = new StringBuilder();
     
             for (Booking booking : bookings) {
                 Flight flight = booking.getFlight();
                 boolean isCancelled = flight.isCancelled();
     
                 if (isCancelled) {
-                    FlightsModel.decrementBookedSeats(flight.getFlightNumber());
-                    SeatModel.updateSeatAvailability(flight.getFlightNumber(), booking.getSeat().getSeat_id(), true);
                     currentPassenger.getBookings().remove(booking);
-                    cancelationID.setText("Flight " + flight.getFlightNumber() + " has been cancelled.");
+                    cancelationMessage.append("Flight ").append(flight.getFlightNumber()).append(" has been cancelled\n");
                     cancellationFound = true;
                 }
     
                 String delayReason = flight.handleDelays();
                 if (!"nothing".equals(delayReason)) {
-                    delayID.setText("Flight " + flight.getFlightNumber() + " delayed due to " + delayReason);
+                    delayMessage.append("Flight ").append(flight.getFlightNumber()).append("delayed due to ").append(delayReason).append("\n");
                     delayFound = true;
                 }
             }
-    
-            if (!cancellationFound) {
+
+            if (cancellationFound) {
+                cancelationID.setText("Flight cancellations:\n" + cancelationMessage.toString());
+            } else {
                 cancelationID.setText("No flight cancellations at the moment.");
             }
-            if (!delayFound) {
+
+            if(delayFound) {
+                delayID.setText("Flight delays:\n" + delayMessage.toString());
+            }
+            else{
                 delayID.setText("No flight delays at the moment.");
             }
         }

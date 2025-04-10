@@ -174,7 +174,6 @@ public class Flight {
                     FlightsModel.decrementBookedSeats(this.getFlightNumber());
                     this.cancelBooking();
                     SeatModel.updateSeatAvailability(this.getFlightNumber(), booking.getSeat().getSeat_id(), true);
-                    iterator.remove(); // Safely remove the booking from the list
                 }
             }
             return true;
