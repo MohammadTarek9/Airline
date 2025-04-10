@@ -91,7 +91,6 @@ private void handlePayment(ActionEvent event) {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Boarding Pass");
-        stage.setResizable(false);
         stage.show();
         GoToCancelFlight(event);
     } catch (IOException e) {

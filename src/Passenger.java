@@ -82,6 +82,10 @@ public class Passenger {
         this.bookings.add(booking);
     }
 
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
+    }
+
     
     public ArrayList<Flight> searchFlights(String source, String destination) {
         ArrayList<Flight> availableFlights = new ArrayList<>();
@@ -145,6 +149,12 @@ public class Passenger {
         }
         boolean r2 = BookingsModel.deleteBooking(bookingID);
         flight.cancelBooking();
+        for (int i = 0; i < passengerBookings.size(); i++) {
+            if (passengerBookings.get(i).getBookingID() == bookingID) {
+                passengerBookings.remove(i);
+                break;
+            }
+        }
         if(!r2){
             result = "Error deleting booking!";
             return result;

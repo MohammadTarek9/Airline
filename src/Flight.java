@@ -2,6 +2,8 @@
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import java.util.Iterator;
 public class Flight {
     private String flightNumber;
     private int capacity;
@@ -109,15 +111,6 @@ public class Flight {
         this.seats = seats;
     }
 
-    public boolean Delay(String newDepartureTime, String newArrivalTime) {
-        if (LocalDateTime.parse(newDepartureTime).isAfter(LocalDateTime.now()) && LocalDateTime.parse(newArrivalTime).isAfter(LocalDateTime.parse(newDepartureTime))) {
-            this.departureTime = newDepartureTime;
-            this.arrivalTime = newArrivalTime;
-            return true;
-        }
-        return false;
-    }
-
     public void bookSeat() {
         if (bookedSeats < capacity) {
             bookedSeats++;
@@ -158,14 +151,36 @@ public class Flight {
         boolean isDelayed = FlightsModel.checkIfDelayed(this.flightNumber);
         if(isDelayed) {
             String delayReason = FlightsModel.getDelayReason(this.flightNumber);
+            String newDepTime = FlightsModel.getDepartureTime(this.getFlightNumber());
+            this.setDepartureTime(newDepTime);
+            String newArrTime = FlightsModel.getArrivalTime(this.getFlightNumber());
+            this.setArrivalTime(newArrTime);
             return delayReason;
         }
         return "nothing";
     }
 
     public boolean isCancelled() {
-        Flight cancelledFlight = FlightsModel.getFlightDetails(this.flightNumber);
-        return cancelledFlight == null;
+        boolean isCancelled = false;
+        isCancelled = FlightsModel.checkIfCancelled(this.flightNumber);
+        Passenger passenger = Session.getPassenger();
+        ArrayList<Booking> bookings = passenger.getBookings();
+        if (isCancelled) {
+            Iterator<Booking> iterator = bookings.iterator();
+            while (iterator.hasNext()) {
+                Booking booking = iterator.next();
+                if (booking.getFlight().getFlightNumber().equals(this.flightNumber)) {
+                    BookingsModel.deleteBooking(booking.getBookingID());
+                    FlightsModel.decrementBookedSeats(this.getFlightNumber());
+                    this.cancelBooking();
+                    SeatModel.updateSeatAvailability(this.getFlightNumber(), booking.getSeat().getSeat_id(), true);
+                    iterator.remove(); // Safely remove the booking from the list
+                }
+            }
+            return true;
+        }
+        return false;
+        
     }
 
     public void displayFlightDetails() {

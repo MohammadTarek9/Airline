@@ -1,69 +1,184 @@
+
+
+//     @FXML
+//     void GoToBookFlight(ActionEvent event) {
+
+//         try {
+//             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookFlights.fxml"));
+//             Parent root = loader.load();
+//             Stage stage = (Stage) BookFlightBtn.getScene().getWindow();
+//             BookFlightBtn.getScene().setRoot(root);
+//             stage.setTitle("FlyOps - Book Flight");
+//             stage.show();
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//         }
+
+//     }
+
+//     @FXML
+//     void GoToCancelFlight(ActionEvent event) {
+
+//         try {
+//             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
+//             Parent root = loader.load();
+//             Stage stage = (Stage) CancelFlightBtn.getScene().getWindow();
+//             CancelFlightBtn.getScene().setRoot(root);
+//             stage.setTitle("FlyOps - Cancel Flight");
+//             stage.show();
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//         }
+
+//     }
+
+//     @FXML
+//     void GoToManageAccount(ActionEvent event) {
+
+//         try {
+//             FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
+//             Parent root = loader.load();
+//             Stage stage = (Stage) ManageAccountBtn.getScene().getWindow();
+//             ManageAccountBtn.getScene().setRoot(root);
+//             stage.setTitle("FlyOps - Manage Account");
+//             stage.show();
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//         }
+
+//     }
+
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.util.ArrayList;
 
 public class UpdatesController implements Initializable {
 
     @FXML
-    private Label flightCancellationLabel;
+    private Button accountBtn;
 
     @FXML
-    private Label flightDelaysLabel;
+    private Button bookBtn;
 
     @FXML
-    private Button BookFlightBtn;
+    private Button cancelBtn;
 
     @FXML
-    private Button CancelFlightBtn;
+    private Label cancelationID;
 
     @FXML
-    private Button ManageAccountBtn;
+    private Label delayID;
+
+    @FXML
+    private Button viewBoardingBtn;
+
+    @FXML
+    private TextField flightIDField;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Passenger currentPassenger = Session.getPassenger();
-        ArrayList<Booking> bookings = currentPassenger.getBookings();
+        ArrayList<Booking> bookings = new ArrayList<>(currentPassenger.getBookings());
         if(bookings.isEmpty()) {
-            flightCancellationLabel.setText("No flight cancellations at the moment.");
-            flightDelaysLabel.setText("No flight delays at the moment.");
+            cancelationID.setText("No flight cancellations at the moment.");
+            delayID.setText("No flight delays at the moment.");
         } 
         else{
-            for(Booking booking : bookings) {
+            boolean cancellationFound = false;
+            boolean delayFound = false;
+    
+            for (Booking booking : bookings) {
                 Flight flight = booking.getFlight();
                 boolean isCancelled = flight.isCancelled();
+    
                 if (isCancelled) {
-                    flightCancellationLabel.setText("Flight " + flight.getFlightNumber() + " has been cancelled.");
-                } else {
-                    flightCancellationLabel.setText("No flight cancellations at the moment.");
+                    FlightsModel.decrementBookedSeats(flight.getFlightNumber());
+                    SeatModel.updateSeatAvailability(flight.getFlightNumber(), booking.getSeat().getSeat_id(), true);
+                    currentPassenger.getBookings().remove(booking);
+                    cancelationID.setText("Flight " + flight.getFlightNumber() + " has been cancelled.");
+                    cancellationFound = true;
                 }
-
+    
                 String delayReason = flight.handleDelays();
-                if (delayReason != "nothing") {
-                    flightDelaysLabel.setText("Flight " + flight.getFlightNumber() + " is delayed due to: " + delayReason);
-                } else {
-                    flightDelaysLabel.setText("No flight delays at the moment.");
+                if (!"nothing".equals(delayReason)) {
+                    delayID.setText("Flight " + flight.getFlightNumber() + " delayed due to " + delayReason);
+                    delayFound = true;
                 }
             }
+    
+            if (!cancellationFound) {
+                cancelationID.setText("No flight cancellations at the moment.");
+            }
+            if (!delayFound) {
+                delayID.setText("No flight delays at the moment.");
+            }
         }
-        
     }
 
     @FXML
-    void GoToBookFlight(ActionEvent event) {
+    void goToBoardingPass(ActionEvent event) {
+        String flightID = flightIDField.getText();
+        if (flightID.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please enter a flight ID.");
+            return;
+        }
+        Flight flight = FlightsModel.getFlightDetails(flightID);
+        Passenger currentPassenger = Session.getPassenger();
+        ArrayList<Booking> bookings = currentPassenger.getBookings();
+        boolean flightFound = false;
+        for (Booking booking : bookings) {
+            if (booking.getFlight().getFlightNumber().equals(flightID)) {
+                flightFound = true;
+                break;
+            }
+        }
+        if (!flightFound) {
+            showAlert(Alert.AlertType.ERROR, "Error", "You do not have a booking for this flight.");
+            return;
+        }
+
+        if (flight == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Flight not found.");
+            System.out.println("Flight not found.");
+            return;
+        }
+        Session.setFlight(flight);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BoardingPass.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Boarding Pass");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void goToBookFlight(ActionEvent event) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookFlights.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) BookFlightBtn.getScene().getWindow();
-            BookFlightBtn.getScene().setRoot(root);
+            Stage stage = (Stage) bookBtn.getScene().getWindow();
+            bookBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Book Flight");
             stage.show();
         } catch (Exception e) {
@@ -73,13 +188,13 @@ public class UpdatesController implements Initializable {
     }
 
     @FXML
-    void GoToCancelFlight(ActionEvent event) {
+    void goToCancelFlight(ActionEvent event) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelFlight.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) CancelFlightBtn.getScene().getWindow();
-            CancelFlightBtn.getScene().setRoot(root);
+            Stage stage = (Stage) cancelBtn.getScene().getWindow();
+            cancelBtn.getScene().setRoot(root);
             stage.setTitle("FlyOps - Cancel Flight");
             stage.show();
         } catch (Exception e) {
@@ -89,21 +204,27 @@ public class UpdatesController implements Initializable {
     }
 
     @FXML
-    void GoToManageAccount(ActionEvent event) {
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ManageAccountBtn.getScene().getWindow();
-            ManageAccountBtn.getScene().setRoot(root);
-            stage.setTitle("FlyOps - Manage Account");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    void goToManageAccount(ActionEvent event) {
+            
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageAccount.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) accountBtn.getScene().getWindow();
+                accountBtn.getScene().setRoot(root);
+                stage.setTitle("FlyOps - Manage Account");
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
     }
 
-    
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 }
