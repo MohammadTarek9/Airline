@@ -16,7 +16,9 @@ public class Seat {
         this.seatType = seatType;
     }
 
-
+    public Seat(){
+        
+    }
 
     public String getSeatType() {
         return seatType;

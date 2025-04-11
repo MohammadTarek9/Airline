@@ -1,4 +1,3 @@
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -127,7 +126,6 @@ public class BookFlightsController {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Booking details");
             ((Button) event.getSource()).getScene().setRoot(root);
-            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -172,7 +170,7 @@ public class BookFlightsController {
 
     @FXML
     private void initialize() {
-        drawTable(Flight.getAllFlights());
+        drawTable(Flight.getAllAvailableFlights());
     }
 
     private void drawTable(ArrayList<Flight> availableFlights) {

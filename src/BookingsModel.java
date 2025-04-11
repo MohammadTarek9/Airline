@@ -1,5 +1,3 @@
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -141,6 +139,26 @@ public class BookingsModel {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static void deleteNotConfirmedBookings(String email) {
+        ArrayList<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM booking WHERE email = ? and isConfirmed = 0";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String flightNumber = resultSet.getString("flightNumber");
+                int bookingId = resultSet.getInt("bookingID");
+                String seat_id = resultSet.getString("seat_id");
+                SeatModel.updateSeatAvailability(flightNumber, seat_id, true);
+                FlightsModel.decrementBookedSeats(flightNumber);
+                BookingsModel.deleteBooking(bookingId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
         }
     }
 }

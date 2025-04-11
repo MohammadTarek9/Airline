@@ -1,9 +1,6 @@
-
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import java.util.Iterator;
+
 public class Flight {
     private String flightNumber;
     private int capacity;
@@ -29,6 +26,10 @@ public class Flight {
 
     public Flight(String flightNumber, int capacity, String source, String destination, String departureTime, String arrivalTime, double fare) {
         this(flightNumber, capacity, 0, source, destination, departureTime, arrivalTime, fare);
+    }
+
+    public Flight() {
+
     }
 
     public String getFlightNumber() {
@@ -191,6 +192,12 @@ public class Flight {
         System.out.println("Departure Time: " + departureTime);
         System.out.println("Arrival Time: " + arrivalTime);
         System.out.println("baseFare: " + baseFare);
+    }
+
+    public static ArrayList<Flight> getAllAvailableFlights() {
+        ArrayList<Flight> flights = new ArrayList<>();
+        flights = FlightsModel.getAllAvailableFlights();
+        return flights;
     }
 
 }

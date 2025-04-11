@@ -2,6 +2,10 @@
 
 public class Payment {
 
+    public Payment(){
+        
+    }
+
     private static boolean validateCreditCard(String cardNumber){
         if (cardNumber == null || cardNumber.length() < 16){
             return false;

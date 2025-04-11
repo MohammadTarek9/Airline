@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -20,6 +18,10 @@ public class Passenger {
         this.password = password;
         this.age = age;
         this.bookings = new ArrayList<>();
+    }
+
+    public Passenger() {
+
     }
 
     public String getEmail() {
@@ -89,7 +91,7 @@ public class Passenger {
     
     public ArrayList<Flight> searchFlights(String source, String destination) {
         ArrayList<Flight> availableFlights = new ArrayList<>();
-        for (Flight flight : Flight.getAllFlights()) {
+        for (Flight flight : Flight.getAllAvailableFlights()) {
             if (flight.getSource().equalsIgnoreCase(source) && flight.getDestination().equalsIgnoreCase(destination)) {
                 availableFlights.add(flight);
             }
@@ -231,25 +233,30 @@ public class Passenger {
     public String updateAccount(String oldEmail, String newEmail, String newPassword, String confirmPassword, String newPhoneNumber, String newAge) {
         String result = "success";
         boolean emailChanged = false;
+        boolean validEmail = true;
+        boolean emailExists = false;
         if(!newEmail.isEmpty()){
             if(newEmail.equals(oldEmail)){
                 result = "New email cannot be the same as the old email!";
             }
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
             if (!Pattern.matches(emailRegex, newEmail)) {
+                validEmail = false;
                 result = "Invalid email format!";
             }
             if(UserModel.isEmailExists(newEmail)) {
+                emailExists = true;
                 result = "Email already exists!";
             }
-            String emailChangeResult = UserModel.changeEmail(oldEmail, newEmail);
-
-            if(!emailChangeResult.equals("success")){
-                result = "Failed to update email!";
-            }
-            else{
-                emailChanged = true;
-                this.setEmail(newEmail);
+            if (validEmail && !emailExists){
+                String emailChangeResult = UserModel.changeEmail(oldEmail, newEmail);
+                if(!emailChangeResult.equals("success")){
+                    result = "Failed to update email!";
+                }
+                else{
+                    emailChanged = true;
+                    this.setEmail(newEmail);
+                }
             }
         }
 
@@ -300,7 +307,12 @@ public class Passenger {
             if (!newAge.matches("\\d+")) {
                 result = "Age must be a number!";
             }
-            int age = Integer.parseInt(newAge);
+            int age;
+            try {
+                age = Integer.parseInt(newAge);
+            } catch (NumberFormatException e) {
+                return "Age must be a number!";
+            }
             String email = emailChanged ? newEmail : oldEmail;
             String ageChangeResult = UserModel.changeAge(email, age);
             if(!ageChangeResult.equals("success")){

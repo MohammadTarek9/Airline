@@ -1,11 +1,10 @@
-
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class App extends Application {
     @Override
@@ -19,6 +18,14 @@ public class App extends Application {
             primaryStage.setTitle("FlyOps - Sign Up");
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            //Remove Non-Confirmed Bookings//
+            primaryStage.setOnCloseRequest(e -> {
+                if (Session.getPassenger() != null) {
+                    BookingsModel.deleteNotConfirmedBookings(Session.getPassenger().getEmail());
+                }
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
