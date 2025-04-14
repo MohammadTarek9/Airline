@@ -184,4 +184,48 @@ public class FlightsModel {
         }
         return flights;
     }
+
+    public static String addFlight(Flight flight) {
+        String query = "INSERT INTO flight (flightNumber, capacity, bookedSeats, source, destination, departureTime, arrivalTime, baseFare) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flight.getFlightNumber());
+            preparedStatement.setInt(2, flight.getCapacity());
+            preparedStatement.setInt(3, flight.getBookedSeats());
+            preparedStatement.setString(4, flight.getSource());
+            preparedStatement.setString(5, flight.getDestination());
+            preparedStatement.setString(6, flight.getDepartureTime());
+            preparedStatement.setString(7, flight.getArrivalTime());
+            preparedStatement.setDouble(8, flight.getBaseFare());
+            preparedStatement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "error adding flight";
+    }
+
+    public static void delayFlight(String flightNumber, String reason, String newDepartureTime, String newArrivalTime) {
+        String query = "UPDATE flight SET isDelayed = 1, delayReason = ?, departureTime = ?, arrivalTime = ? WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, reason);
+            preparedStatement.setString(2, newDepartureTime);
+            preparedStatement.setString(3, newArrivalTime);
+            preparedStatement.setString(4, flightNumber);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean cancelFlight(String flightNumber) {
+        String query = "UPDATE flight SET isCancelled = 1 WHERE flightNumber = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

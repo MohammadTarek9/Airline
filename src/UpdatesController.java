@@ -65,7 +65,7 @@ public class UpdatesController implements Initializable {
     
                 String delayReason = flight.handleDelays();
                 if (!"nothing".equals(delayReason)) {
-                    delayMessage.append("Flight ").append(flight.getFlightNumber()).append("delayed due to ").append(delayReason).append("\n");
+                    delayMessage.append("Flight ").append(flight.getFlightNumber()).append(" delayed due to ").append(delayReason).append("\n");
                     delayFound = true;
                 }
             }

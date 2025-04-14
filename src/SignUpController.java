@@ -80,7 +80,7 @@ public class SignUpController {
             showAlert(Alert.AlertType.ERROR, "Error", "Invalid email format!");
         }
 
-        else if(result.equals("Email already exists!")){
+        else if(result.equals("Email already exists!") || AdminModel.isAdmin(email)){
             showAlert(Alert.AlertType.ERROR, "Error", "Email already exists!");
         }
         

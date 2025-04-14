@@ -183,7 +183,7 @@ public class Passenger {
             return result;
         }
 
-        if(UserModel.isEmailExists(email)) {
+        if(UserModel.isEmailExists(email) || AdminModel.isAdmin(email) ) {
             result = "Email already exists!";
             return result;
         }

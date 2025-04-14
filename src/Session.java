@@ -5,6 +5,7 @@ public class Session {
     private static Passenger passenger;
     private static Booking booking;
     private static Flight flight;
+    private static Admin admin;
 
 
     public static void setPassenger(Passenger passenger) {
@@ -29,6 +30,14 @@ public class Session {
 
     public static void setFlight(Flight flight) {
         Session.flight = flight;
+    }
+
+    public static Admin getAdmin() {
+        return admin;
+    }
+
+    public static void setAdmin(Admin admin) {
+        Session.admin = admin;
     }
 
 

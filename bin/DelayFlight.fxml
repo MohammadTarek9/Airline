@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="794.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DelayFlightController">
+   <children>
+      <VBox layoutY="-2.0" prefHeight="798.0" prefWidth="114.0" style="-fx-background-color: #1A3E76;">
+         <children>
+            <Button fx:id="ViewFlightDetailsBtn" layoutX="10.0" layoutY="258.0" mnemonicParsing="false" onAction="#GoToFlightDetails" opacity="0.3" prefHeight="105.0" prefWidth="112.0" style="-fx-background-color: #1A3E76;" text="View Flight Details" textAlignment="CENTER" textFill="WHITE" translateX="1.0" translateY="126.0" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="18.5" />
+               </font>
+            </Button>
+            <ImageView fitHeight="112.0" fitWidth="111.0" opacity="0.3" translateX="5.0" translateY="115.0">
+               <image>
+                  <Image url="@BookFlight.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="AddFlightBtn" layoutX="10.0" layoutY="112.0" mnemonicParsing="false" onAction="#GoToAddFlight" opacity="0.3" prefHeight="75.0" prefWidth="105.0" style="-fx-background-color: #1A3E76;" text="Add Flight" textAlignment="CENTER" textFill="WHITE" translateX="3.0" translateY="107.0" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="18.5" />
+               </font>
+            </Button>
+            <ImageView fitHeight="89.0" fitWidth="97.0" opacity="0.3" preserveRatio="true" translateX="11.0" translateY="139.0">
+               <image>
+                  <Image url="@CancelBooking.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="CancelFlightBtn" layoutX="10.0" layoutY="301.0" mnemonicParsing="false" onAction="#GoToCancel" opacity="0.3" prefHeight="75.0" prefWidth="100.0" style="-fx-background-color: #1A3E76;" text="Cancel Flight" textAlignment="CENTER" textFill="WHITE" translateX="7.0" translateY="148.0" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="18.5" />
+               </font>
+            </Button>
+            <ImageView fitHeight="92.0" fitWidth="86.0" preserveRatio="true" translateX="12.0" translateY="163.0">
+               <image>
+                  <Image url="@delay%20icon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="DelayFlightBtn" layoutX="10.0" layoutY="112.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="112.0" style="-fx-background-color: #1A3E76;" text="Delay Flight" textAlignment="CENTER" textFill="WHITE" translateX="2.0" translateY="173.0" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="18.5" />
+               </font>
+            </Button>
+            <ImageView fitHeight="92.0" fitWidth="97.0" opacity="0.3" preserveRatio="true" translateX="9.0" translateY="-579.0">
+               <image>
+                  <Image url="@image%20(1).png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <ImageView fitHeight="811.0" fitWidth="1041.0" layoutX="114.0" layoutY="-5.0" opacity="0.37">
+         <image>
+            <Image url="@pngimg.com_-_world_map_PNG2.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="163.0" layoutY="58.0" prefHeight="67.0" prefWidth="443.0" text="Enter The Flight Number To be Delayed">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <TextField fx:id="flightNumField" layoutX="163.0" layoutY="132.0" prefHeight="59.0" prefWidth="443.0" />
+      <Label layoutX="163.0" layoutY="190.0" prefHeight="67.0" prefWidth="443.0" text="Enter The Delay Reason">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="DelayReasonField" layoutX="163.0" layoutY="261.0" prefHeight="165.0" prefWidth="443.0" />
+      <Label layoutX="163.0" layoutY="429.0" prefHeight="67.0" prefWidth="670.0" text="Select The Updated Departure Time (YYYY-MM-DD hh:mm:ss) ">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="163.0" layoutY="542.0" prefHeight="67.0" prefWidth="652.0" text="Select The Updated Arrival Time (YYYY-MM-DD hh:mm:ss)">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <TextField fx:id="NewDepartureField" layoutX="163.0" layoutY="496.0" prefHeight="46.0" prefWidth="443.0" />
+      <TextField fx:id="NewArrivalField" layoutX="163.0" layoutY="619.0" prefHeight="46.0" prefWidth="443.0" />
+      <Button fx:id="DelayFlightBtn" layoutX="938.0" layoutY="711.0" mnemonicParsing="false" onAction="#HandleDelay" prefHeight="74.0" prefWidth="143.0" style="-fx-background-color: #1A3E76;" text="Delay" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold Italic" size="29.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

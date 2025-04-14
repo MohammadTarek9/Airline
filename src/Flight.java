@@ -1,5 +1,8 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javafx.scene.control.Alert;
 
 public class Flight {
     private String flightNumber;
@@ -181,6 +184,43 @@ public class Flight {
         }
         return false;
         
+    }
+
+    public String delayFlight(String newDeparture, String newArrival, String delayReason ){
+        String result = "success";
+        if (!newDeparture.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}") || !newArrival.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
+            result = "Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.";
+            return result;
+        }
+        LocalDateTime newDepartureDateTime = LocalDateTime.parse(newDeparture.replace(" ", "T"));
+        LocalDateTime newArrivalDateTime = LocalDateTime.parse(newArrival.replace(" ", "T"));
+        if (newDepartureDateTime.isAfter(newArrivalDateTime)) {
+            result = "Departure time cannot be later than arrival time.";
+            return result;
+        }
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        if (newDepartureDateTime.isBefore(currentTime)) {
+            result = "New departure time cannot be earlier than the current time.";
+            return result;
+        }
+        if (newArrivalDateTime.isBefore(currentTime)) {
+            result = "New arrival time cannot be earlier than the current time.";
+            return result;
+        }
+        if (newDepartureDateTime.isEqual(newArrivalDateTime)) {
+            result = "New departure time cannot be equal to new arrival time.";
+            return result;
+        }
+
+        if (newDepartureDateTime.isEqual(LocalDateTime.parse(this.getDepartureTime().replace(" ", "T"))) || newArrivalDateTime.isEqual(LocalDateTime.parse(this.getArrivalTime().replace(" ", "T")))) {
+            result = "New departure and arrival times cannot be the same as the current times.";
+            return result;
+        }
+        FlightsModel.delayFlight(this.flightNumber, delayReason, newDeparture, newArrival);
+        this.setDepartureTime(newDeparture);
+        this.setArrivalTime(newArrival);
+        return result;
     }
 
     public void displayFlightDetails() {

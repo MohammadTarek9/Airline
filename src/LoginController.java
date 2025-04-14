@@ -46,11 +46,30 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwdField.getText();
         String result = Passenger.login(email, password);
+        boolean isAdmin = false;
         if(result.equals("Email and password cannot be empty!")){
             showAlert(Alert.AlertType.ERROR, "Error", "Email and password cannot be empty!");
         }
         else if(result.equals("You do not have an account!")){
-            showAlert(Alert.AlertType.ERROR, "Error", "You do not have an account!");
+            if(Admin.login(email, password).equals("success")){
+                isAdmin = true;
+                Admin admin = AdminModel.getAdminDetails(email);
+                Session.setAdmin(admin);
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FlightDetails.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) LoginBtn.getScene().getWindow();
+                    LoginBtn.getScene().setRoot(root);
+                    stage.setTitle("FlyOps - Admin Page");
+                    stage.show();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                showAlert(Alert.AlertType.ERROR, "Error", Admin.login(email, password));
+            }
         }
         else if(result.equals("Incorrect password!")){
             showAlert(Alert.AlertType.ERROR, "Error", "Incorrect password!");

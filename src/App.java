@@ -37,6 +37,7 @@ public class App extends Application {
         FlightsModel.connectToDatabase();
         BookingsModel.connectToDatabase();
         SeatModel.connectToDatabase();
+        AdminModel.connectToDatabase();
         launch(args);
     }
 }

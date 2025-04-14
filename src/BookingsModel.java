@@ -161,4 +161,28 @@ public class BookingsModel {
             return;
         }
     }
+
+    public static ArrayList<Booking> getAllBookingsForFlightNumber(String flightNumber) {
+        ArrayList<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM booking WHERE flightNumber = ? and isConfirmed = 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, flightNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int bookingId = resultSet.getInt("bookingID");
+                String passengerEmail = resultSet.getString("email");
+                String seat_id = resultSet.getString("seat_id");
+                Passenger passenger = UserModel.getPassengerDetails(passengerEmail);
+                Flight flight = FlightsModel.getFlightDetails(flightNumber);
+                String seatType = SeatModel.getSeatType(seat_id, flightNumber);
+                Seat seat = new Seat(seat_id, false, seatType);
+                Booking booking = new Booking(bookingId, flight, passenger, seat, true);
+                bookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return bookings;
+    }
 }
