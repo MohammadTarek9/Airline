@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -203,6 +205,58 @@ public class FlightTest {
                 fm.verify(() -> FlightsModel.decrementBookedSeats("FL123"), Mockito.times(1));
                 smodel.verify(() -> SeatModel.updateSeatAvailability("FL123", "1A", true), Mockito.times(1));
 
+        }
+    }
+
+    @Test
+    public void testDelayFlight_InvalidDateFormat() {
+        String result = flight.delayFlight("2030-01-01 10:00", "2030-01-01 14:00", "Maintenance");
+        assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", result);
+    }
+
+    @Test
+    public void testDelayFlight_DepartureAfterArrival() {
+        String result = flight.delayFlight("2030-01-01 15:00:00", "2030-01-01 14:00:00", "Maintenance");
+        assertEquals("Departure time cannot be later than arrival time.", result);
+    }
+
+    @Test
+    public void testDelayFlight_DepartureBeforeCurrentTime() {
+        String pastTime = LocalDateTime.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String result = flight.delayFlight(pastTime, "2030-01-01 14:00:00", "Maintenance");
+        assertEquals("New departure time cannot be earlier than the current time.", result);
+    }
+
+    @Test
+    public void testDelayFlight_ArrivalBeforeCurrentTime() {
+        String pastTime = LocalDateTime.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String result = flight.delayFlight("2030-01-01 10:00:00", pastTime, "Maintenance");
+        assertEquals("Departure time cannot be later than arrival time.", result);
+    }
+
+    @Test
+    public void testDelayFlight_DepartureEqualsArrival() {
+        String result = flight.delayFlight("2030-01-01 10:00:00", "2030-01-01 10:00:00", "Maintenance");
+        assertEquals("New departure time cannot be equal to new arrival time.", result);
+    }
+
+    @Test
+    public void testDelayFlight_SameAsCurrentTimes() {
+        String result = flight.delayFlight("2030-01-01 10:00:00", "2030-01-01 14:00:00", "Maintenance");
+        assertEquals("New departure and arrival times cannot be the same as the current times.", result);
+    }
+
+    @Test
+    public void testDelayFlight_Success() {
+        try (MockedStatic<FlightsModel> fm = Mockito.mockStatic(FlightsModel.class)) {
+            fm.when(() -> FlightsModel.delayFlight("FL123", "Maintenance", "2030-01-01 12:00:00", "2030-01-01 16:00:00")).thenAnswer(invocation -> null);
+
+            String result = flight.delayFlight("2030-01-01 12:00:00", "2030-01-01 16:00:00", "Maintenance");
+            assertEquals("success", result);
+            assertEquals("2030-01-01 12:00:00", flight.getDepartureTime());
+            assertEquals("2030-01-01 16:00:00", flight.getArrivalTime());
+
+            fm.verify(() -> FlightsModel.delayFlight("FL123", "Maintenance", "2030-01-01 12:00:00", "2030-01-01 16:00:00"), Mockito.times(1));
         }
     }
 }

@@ -22,6 +22,7 @@ class PassengerTest {
         FlightsModel.connectToDatabase();
         BookingsModel.connectToDatabase();
         SeatModel.connectToDatabase();
+        AdminModel.connectToDatabase();
     }
 
     @BeforeEach

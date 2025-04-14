@@ -10,6 +10,7 @@ class SessionTest {
         Session.setPassenger(null);
         Session.setBookings(null);
         Session.setFlight(null);
+        Session.setAdmin(null);
     }
 
     @Test
@@ -37,10 +38,18 @@ class SessionTest {
     }
 
     @Test
+    void testAdminSetterAndGetter() {
+        Admin admin = new Admin("admin123", "password123", "Admin Name");
+        Session.setAdmin(admin);
+        assertSame(admin, Session.getAdmin(), "getAdmin() should return the value set by setAdmin()");
+    }
+
+    @Test
     void testDefaultsAreNull() {
         // Before any set calls, everything should be null
         assertNull(Session.getPassenger(), "Passenger should be null by default");
         assertNull(Session.getBookings(), "Booking should be null by default");
         assertNull(Session.getFlight(), "Flight should be null by default");
+        assertNull(Session.getAdmin(), "Admin should be null by default");
     }
 }
