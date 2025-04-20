@@ -1,7 +1,11 @@
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -16,13 +20,28 @@ class PassengerTest {
 
     /// ///////////////////////////////////////////////////
     @BeforeAll
-
     public static void setupDatabase() {
         UserModel.connectToDatabase();
         FlightsModel.connectToDatabase();
         BookingsModel.connectToDatabase();
         SeatModel.connectToDatabase();
         AdminModel.connectToDatabase();
+    }
+
+    @AfterAll
+    public static void cleanup() {
+        // Clean up
+        try (Statement stmt = UserModel.getConnection().createStatement()) {
+            stmt.execute("DELETE FROM passenger WHERE email in ('testuser55@example.com', 'old@example.com', 'neij@example.com')");
+            FlightsModel.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        UserModel.closeConnection();
+        FlightsModel.closeConnection();
+        BookingsModel.closeConnection();
+        SeatModel.closeConnection();
+        AdminModel.closeConnection();
     }
 
     @BeforeEach
@@ -114,9 +133,10 @@ class PassengerTest {
     @Order(30)
     public void testSearchFlights() {
         ArrayList<Flight> result = Passenger.searchFlights("Chicago", "Miami");
-    
+
         assertEquals(4, result.size());
     }
+
     @Test
     @Order(5)
     public void testFilterFlightsByDate() {
@@ -134,18 +154,12 @@ class PassengerTest {
     @Test
     @Order(6)
     public void testBookFlight() {
-        try (
-                MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class);
-                MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class);
-                MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
+        try (MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class); MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class); MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
 
-            seatModelMock.when(() -> SeatModel.getSeatDetails("A1",
-                    "FN123")).thenReturn(seat);
-            bookingsModelMock.when(() -> BookingsModel.addBooking("FN123", Passenger,
-                    "A1")).thenReturn(10);
+            seatModelMock.when(() -> SeatModel.getSeatDetails("A1", "FN123")).thenReturn(seat);
+            bookingsModelMock.when(() -> BookingsModel.addBooking("FN123", Passenger, "A1")).thenReturn(10);
 
-            seatModelMock.when(() -> SeatModel.updateSeatAvailability("FN123", "A1",
-                    false)).thenReturn(true);
+            seatModelMock.when(() -> SeatModel.updateSeatAvailability("FN123", "A1", false)).thenReturn(true);
             flightsModelMock.when(() -> FlightsModel.incrementBookedSeats("FN123")).thenAnswer(inv -> null);
 
             boolean result = Passenger.BookFlight("A1");
@@ -155,8 +169,7 @@ class PassengerTest {
             Booking booking = Passenger.getBookings().get(0);
             assertEquals("A1", booking.getSeat().getSeat_id());
             assertEquals(10, booking.getBookingID());
-            assertEquals(flight1.getFlightNumber(),
-                    booking.getFlight().getFlightNumber());
+            assertEquals(flight1.getFlightNumber(), booking.getFlight().getFlightNumber());
             assertEquals(Passenger.getEmail(), booking.getPassenger().getEmail());
             assertFalse(booking.getIsConfirmed());
         }
@@ -165,20 +178,15 @@ class PassengerTest {
     @Test
     @Order(7)
     public void testCancelBookingSuccess() {
-        try (
-                MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class);
-                MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class);
-                MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
+        try (MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class); MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class); MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
 
             Seat mockSeat = new Seat("A1", false, "Economy");
-            Flight mockFlight = new Flight("FN123", 150, 30, "Cairo", "New York",
-                    "2025-06-15T10:00", "2025-06-15T15:00", 500.00);
+            Flight mockFlight = new Flight("FN123", 150, 30, "Cairo", "New York", "2025-06-15T10:00", "2025-06-15T15:00", 500.00);
             int bookingId = 1;
 
             bookingsModelMock.when(() -> BookingsModel.getBookingSeat(bookingId)).thenReturn(mockSeat);
             bookingsModelMock.when(() -> BookingsModel.getBookingFlight(bookingId)).thenReturn(mockFlight);
-            seatModelMock.when(() -> SeatModel.updateSeatAvailability("FN123", "A1",
-                    true)).thenReturn(true);
+            seatModelMock.when(() -> SeatModel.updateSeatAvailability("FN123", "A1", true)).thenReturn(true);
             flightsModelMock.when(() -> FlightsModel.decrementBookedSeats("FN123")).thenReturn(true);
             bookingsModelMock.when(() -> BookingsModel.deleteBooking(bookingId)).thenReturn(true);
 
@@ -303,23 +311,21 @@ class PassengerTest {
     @Test
     @Order(15)
     public void testRefreshBookings() {
-    
-    ArrayList<Booking> mockBookings = new ArrayList<>();
-    
-    mockBookings.add(booking1);
-    mockBookings.add(booking2);
-    try(MockedStatic <BookingsModel> bookingsModelMock =
-    Mockito.mockStatic(BookingsModel.class)){
-    bookingsModelMock.when(() ->
-    BookingsModel.getAllBookings(Passenger.getEmail())).thenReturn(mockBookings);
-    
-    Passenger.refreshBookings();
-    
-    assertEquals(2, Passenger.getBookings().size(), "The bookings list should contain 2 bookings.");
-    assertTrue(Passenger.getBookings().contains(booking1));
-    assertTrue(Passenger.getBookings().contains(booking2));
-    }
-    //bookingsModelMock.when(() ->bookingsModelMock.getAllBookings(Passenger.getEmail())).thenReturn(mockBookings);
+
+        ArrayList<Booking> mockBookings = new ArrayList<>();
+
+        mockBookings.add(booking1);
+        mockBookings.add(booking2);
+        try (MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class)) {
+            bookingsModelMock.when(() -> BookingsModel.getAllBookings(Passenger.getEmail())).thenReturn(mockBookings);
+
+            Passenger.refreshBookings();
+
+            assertEquals(2, Passenger.getBookings().size(), "The bookings list should contain 2 bookings.");
+            assertTrue(Passenger.getBookings().contains(booking1));
+            assertTrue(Passenger.getBookings().contains(booking2));
+        }
+        //bookingsModelMock.when(() ->bookingsModelMock.getAllBookings(Passenger.getEmail())).thenReturn(mockBookings);
     }
 
     @Test
@@ -357,10 +363,8 @@ class PassengerTest {
     @Test
     @Order(29)
     public void testUpdateAccountWithValidData() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser55@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser55@example.com", "neij@example.com", "newpassword123",
-                "newpassword123", "+12345678901", "31");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser55@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser55@example.com", "neij@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("success", result);
     }
 
@@ -369,83 +373,66 @@ class PassengerTest {
     @Test
     @Order(20)
     public void testUpdateAccountWithInvalidEmailFormat() {
-        Passenger passenger = new Passenger("Mohamed", "Dahy", "+1292149714", "testuser54@example.com", "password123",
-                20);
-        String result = passenger.updateAccount("testuser54@example.com", "ezayy", "newpassword123", "newpassword123",
-                "+12345678901", "31");
+        Passenger passenger = new Passenger("Mohamed", "Dahy", "+1292149714", "testuser54@example.com", "password123", 20);
+        String result = passenger.updateAccount("testuser54@example.com", "ezayy", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("Invalid email format!", result);
     }
 
     @Test
     @Order(21)
     public void testUpdateAccountWithEmailAlreadyExists() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
         Passenger passenger2 = new Passenger();
-        passenger2.createAccount("old@example.com", "password456", "Ali", "Ahmed",
-        "+9876543210", "41");
-        String result = passenger.updateAccount("testuser54@example.com", "old@example.com", "newpassword320",
-                "newpassword320", "+12345678901", "45");
+        passenger2.createAccount("old@example.com", "password456", "Ali", "Ahmed", "+9876543210", "41");
+        String result = passenger.updateAccount("testuser54@example.com", "old@example.com", "newpassword320", "newpassword320", "+12345678901", "45");
         assertEquals("Email already exists!", result);
     }
 
     @Test
     @Order(22)
     public void testUpdateAccountWithShortPassword() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "new", "new",
-                "+12345678901", "31");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "new", "new", "+12345678901", "31");
         assertEquals("Password must be at least 6 characters long!", result);
     }
 
     @Test
     @Order(23)
     public void testUpdateAccountWithPasswordMismatch() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123",
-                "differentpassword", "+12345678901", "31");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "differentpassword", "+12345678901", "31");
         assertEquals("Passwords do not match!", result);
     }
 
     @Test
     @Order(24)
     public void testUpdateAccountWithInvalidPhoneFormat() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123",
-                "newpassword123", "12345", "31");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "newpassword123", "12345", "31");
         assertEquals("Invalid phone number format!", result);
     }
 
     @Test
     @Order(25)
     public void testUpdateAccountWithInvalidAgeFormat() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser55@example.com", "newpassword123",
-                "newpassword123", "+12345678901", "Invalidage");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser55@example.com", "newpassword123", "newpassword123", "+12345678901", "Invalidage");
         assertEquals("Age must be a number!", result);
     }
 
     @Test
     @Order(26)
     public void testUpdateAccountWithNoChanges() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "password123",
-                "password123", "+1234567890", "30");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "password123", "password123", "+1234567890", "30");
         assertEquals("New age cannot be the same as the old age!", result);
     }
 
     @Test
     @Order(27)
     public void testUpdateAccountWithSameEmail() {
-        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123",
-                30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123",
-                "newpassword123", "+12345678901", "31");
+        Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
+        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("New email cannot be the same as the old email!", result);
     }
 

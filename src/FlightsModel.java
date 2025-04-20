@@ -25,6 +25,20 @@ public class FlightsModel {
         }
     }
 
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static ArrayList<Flight> getAllFlights() {
         ArrayList<Flight> flights = new ArrayList<>();
         String query = "SELECT * FROM flight";

@@ -25,6 +25,20 @@ public class BookingsModel {
         }
     }
 
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static ArrayList<Booking> getAllBookings(String email) {
         ArrayList<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM booking WHERE email = ? and isConfirmed = 1";

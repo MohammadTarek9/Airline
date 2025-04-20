@@ -23,6 +23,20 @@ public class AdminModel {
         }
     }
 
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean isAdmin(String email) {
         try {
             String query = "SELECT * FROM admin WHERE email = ?";

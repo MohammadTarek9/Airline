@@ -24,6 +24,11 @@ public class App extends Application {
                 if (Session.getPassenger() != null) {
                     BookingsModel.deleteNotConfirmedBookings(Session.getPassenger().getEmail());
                 }
+                UserModel.closeConnection();
+                FlightsModel.closeConnection();
+                BookingsModel.closeConnection();
+                SeatModel.closeConnection();
+                AdminModel.closeConnection();
             });
 
         } catch (IOException e) {

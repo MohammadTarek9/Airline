@@ -55,7 +55,7 @@ public class Admin {
     }
 
     public String addFlight(Flight flight){
-        if (flight.getFlightNumber().isEmpty() || flight.getSource().isEmpty() || flight.getDestination().isEmpty() || flight.getDepartureTime().isEmpty() || flight.getArrivalTime().isEmpty() || flight.getCapacity() <= 0 || flight.getBaseFare() <= 0) {
+        if (flight.getFlightNumber().isEmpty() || flight.getSource().isEmpty() || flight.getDestination().isEmpty() || flight.getDepartureTime().isEmpty() || flight.getArrivalTime().isEmpty() || flight.getBaseFare() == 0 || flight.getCapacity() == 0) {
             return "Please fill in all fields correctly.";
         } else {
             if (!flight.getDepartureTime().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}") || !flight.getArrivalTime().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) {

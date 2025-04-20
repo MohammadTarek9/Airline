@@ -25,6 +25,20 @@ public class SeatModel {
         }
     }
 
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean updateSeatAvailability(String flightNumber, String seat_id, boolean available) {
         String query = "UPDATE seat SET available = ? WHERE flightNumber = ? AND seat_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
