@@ -102,4 +102,9 @@ public class BookingTest {
         }
 
     }
+    // WHITE BOX TESTING
+    @Test
+    public void white_box_testing_1(){
+        new Booking();
+    }
 }

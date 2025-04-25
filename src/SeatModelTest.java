@@ -20,21 +20,18 @@ public class SeatModelTest {
             e.printStackTrace();
         }
     }
-
     @BeforeEach
     public void initFlightAndSeats() {
         try {
-            // Insert a test flight
             String insertFlightSQL = """
-                        INSERT INTO flight (flightNumber, capacity, bookedSeats, source, destination, departureTime, arrivalTime, baseFare)
+                        INSERT INTO flight (flightNumber, capacity, bookedSeats, 
+                        source, destination, departureTime, arrivalTime, baseFare)
                         VALUES (?, 100, 0, 'TestCityA', 'TestCityB', '2025-04-15 10:00:00', '2025-04-15 12:00:00', 200.0)
                     """;
             try (PreparedStatement stmt = connection.prepareStatement(insertFlightSQL)) {
                 stmt.setString(1, flightNumber);
                 stmt.executeUpdate();
             }
-
-            // Insert test seats
             String insertSeatsSQL = """
                         INSERT INTO seat (seat_id, flightNumber, available, seatType) VALUES
                         ('1A', ?, true, 'economy'),

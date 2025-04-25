@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdminModelTest {
 
     private Connection connection;
-
     @BeforeAll
     public void setUp() {
         try {
@@ -31,7 +30,6 @@ public class AdminModelTest {
         assertFalse(result, "Non-existent admin should return false");
     }
     @Test
-
     void testGetAdminDetailsExisting() {
         Admin admin = AdminModel.getAdminDetails("mohammad@flyops.com");
         assertNotNull(admin, "Admin should not be null");

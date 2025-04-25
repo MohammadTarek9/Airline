@@ -27,7 +27,7 @@ public class AddFlightController {
     private Button CancelFlightBtn;
 
     @FXML
-    private PasswordField CapacityField;
+    private TextField CapacityField;
 
     @FXML
     private Button DelayFlightBtn;
@@ -42,7 +42,7 @@ public class AddFlightController {
     private TextField FlightNumberField;
 
     @FXML
-    private PasswordField SourceField;
+    private TextField SourceField;
 
     @FXML
     private Button ViewFlightDetailsBtn;

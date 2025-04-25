@@ -2,8 +2,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javafx.scene.control.Alert;
-
 public class Flight {
     private String flightNumber;
     private int capacity;
@@ -34,6 +32,7 @@ public class Flight {
     public Flight() {
 
     }
+
 
     public String getFlightNumber() {
         return flightNumber;
@@ -202,10 +201,6 @@ public class Flight {
         LocalDateTime currentTime = LocalDateTime.now();
         if (newDepartureDateTime.isBefore(currentTime)) {
             result = "New departure time cannot be earlier than the current time.";
-            return result;
-        }
-        if (newArrivalDateTime.isBefore(currentTime)) {
-            result = "New arrival time cannot be earlier than the current time.";
             return result;
         }
         if (newDepartureDateTime.isEqual(newArrivalDateTime)) {

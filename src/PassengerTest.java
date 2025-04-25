@@ -60,9 +60,6 @@ class PassengerTest {
         System.out.println("setup is executed successfully");
     }
 
-    // public void testPassengerConstructor() {
-
-    // }
     @Test
     @Order(0)
     public void testAllGetters() {
@@ -97,11 +94,9 @@ class PassengerTest {
     @Test
     @Order(2)
     public void testGetBookingsInitiallyEmpty() {
-        // ArrayList<Booking> bookings = Passenger.getBookings();
         assertNotNull(Passenger.getBookings());
         assertTrue(Passenger.getBookings().isEmpty(), "Bookings list should be initialized empty.");
     }
-
     @Test
     @Order(3)
     public void testGetBookingsAfterAdding() {
@@ -113,7 +108,6 @@ class PassengerTest {
         assertEquals(booking1, bookings.get(0));
         assertEquals(booking2, bookings.get(1));
     }
-
     @Test
     @Order(4)
     public void testSetAndAddBookings() {
@@ -178,10 +172,13 @@ class PassengerTest {
     @Test
     @Order(7)
     public void testCancelBookingSuccess() {
-        try (MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class); MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class); MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
+        try (MockedStatic<BookingsModel> bookingsModelMock = Mockito.mockStatic(BookingsModel.class); 
+        MockedStatic<SeatModel> seatModelMock = Mockito.mockStatic(SeatModel.class); 
+        MockedStatic<FlightsModel> flightsModelMock = Mockito.mockStatic(FlightsModel.class)) {
 
             Seat mockSeat = new Seat("A1", false, "Economy");
-            Flight mockFlight = new Flight("FN123", 150, 30, "Cairo", "New York", "2025-06-15T10:00", "2025-06-15T15:00", 500.00);
+            Flight mockFlight = new Flight("FN123", 150, 30, 
+            "Cairo", "New York", "2025-06-15T10:00", "2025-06-15T15:00", 500.00);
             int bookingId = 1;
 
             bookingsModelMock.when(() -> BookingsModel.getBookingSeat(bookingId)).thenReturn(mockSeat);
@@ -198,7 +195,6 @@ class PassengerTest {
 
     @Test
     @Order(8)
-    /// ////////////////////////////////////////////////////////////////////////
     public void testCreateAccountSuccess() {
 
         String email = "testuser54@example.com";
@@ -207,13 +203,9 @@ class PassengerTest {
         String lastName = "seif";
         String phone = "+123456789012";
         String age = "30";
-
         String result = Passenger.createAccount(email, password, firstName, lastName, phone, age);
-
         assertEquals("success", result);
     }
-
-    /// ///////////////////////////////////////////////////////////////////////////////////////////
     @Test
     @Order(9)
     public void testCreateAccountMissingField() {
@@ -224,16 +216,13 @@ class PassengerTest {
         String lastName = "seif";
         String phone = "";
         String age = "30";
-
         String result = Passenger.createAccount(email, password, firstName, lastName, phone, age);
-
         assertEquals("All fields are required!", result, "Should return error for missing fields.");
     }
 
     @Test
     @Order(10)
     public void testCreateAccountInvalidEmail() {
-        // Arrange: invalid email format
         String email = "invalid-email";
         String password = "password123";
         String firstName = "Mohamed";
@@ -249,16 +238,13 @@ class PassengerTest {
     @Test
     @Order(11)
     public void testCreateAccountInvalidPhone() {
-
         String email = "testuser3@example.com";
         String password = "password123";
         String firstName = "Mohamed";
         String lastName = "seif";
         String phone = "123456789";
         String age = "30";
-
         String result = Passenger.createAccount(email, password, firstName, lastName, phone, age);
-
         assertEquals("Invalid phone number format!", result);
     }
 
@@ -276,8 +262,6 @@ class PassengerTest {
 
         assertEquals("Age must be a number!", result);
     }
-
-    /// ///////////////////////////////////////////////////////////////
     @Test
     @Order(13)
     public void testCreateAccountEmailExists() {
@@ -325,7 +309,6 @@ class PassengerTest {
             assertTrue(Passenger.getBookings().contains(booking1));
             assertTrue(Passenger.getBookings().contains(booking2));
         }
-        //bookingsModelMock.when(() ->bookingsModelMock.getAllBookings(Passenger.getEmail())).thenReturn(mockBookings);
     }
 
     @Test
@@ -364,7 +347,8 @@ class PassengerTest {
     @Order(29)
     public void testUpdateAccountWithValidData() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser55@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser55@example.com", "neij@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
+        String result = passenger.updateAccount("testuser55@example.com", 
+        "neij@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("success", result);
     }
 
@@ -374,7 +358,8 @@ class PassengerTest {
     @Order(20)
     public void testUpdateAccountWithInvalidEmailFormat() {
         Passenger passenger = new Passenger("Mohamed", "Dahy", "+1292149714", "testuser54@example.com", "password123", 20);
-        String result = passenger.updateAccount("testuser54@example.com", "ezayy", "newpassword123", "newpassword123", "+12345678901", "31");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "ezayy", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("Invalid email format!", result);
     }
 
@@ -384,7 +369,8 @@ class PassengerTest {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
         Passenger passenger2 = new Passenger();
         passenger2.createAccount("old@example.com", "password456", "Ali", "Ahmed", "+9876543210", "41");
-        String result = passenger.updateAccount("testuser54@example.com", "old@example.com", "newpassword320", "newpassword320", "+12345678901", "45");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "old@example.com", "newpassword320", "newpassword320", "+12345678901", "45");
         assertEquals("Email already exists!", result);
     }
 
@@ -392,7 +378,8 @@ class PassengerTest {
     @Order(22)
     public void testUpdateAccountWithShortPassword() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "new", "new", "+12345678901", "31");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "testuser54@example.com", "new", "new", "+12345678901", "31");
         assertEquals("Password must be at least 6 characters long!", result);
     }
 
@@ -400,7 +387,8 @@ class PassengerTest {
     @Order(23)
     public void testUpdateAccountWithPasswordMismatch() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "differentpassword", "+12345678901", "31");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "testuser54@example.com", "newpassword123", "differentpassword", "+12345678901", "31");
         assertEquals("Passwords do not match!", result);
     }
 
@@ -408,7 +396,8 @@ class PassengerTest {
     @Order(24)
     public void testUpdateAccountWithInvalidPhoneFormat() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "newpassword123", "12345", "31");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "testuser54@example.com", "newpassword123", "newpassword123", "12345", "31");
         assertEquals("Invalid phone number format!", result);
     }
 
@@ -416,7 +405,8 @@ class PassengerTest {
     @Order(25)
     public void testUpdateAccountWithInvalidAgeFormat() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser55@example.com", "newpassword123", "newpassword123", "+12345678901", "Invalidage");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "testuser55@example.com", "newpassword123", "newpassword123", "+12345678901", "Invalidage");
         assertEquals("Age must be a number!", result);
     }
 
@@ -424,7 +414,8 @@ class PassengerTest {
     @Order(26)
     public void testUpdateAccountWithNoChanges() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "password123", "password123", "+1234567890", "30");
+        String result = passenger.updateAccount("testuser54@example.com",
+         "testuser54@example.com", "password123", "password123", "+1234567890", "30");
         assertEquals("New age cannot be the same as the old age!", result);
     }
 
@@ -432,7 +423,8 @@ class PassengerTest {
     @Order(27)
     public void testUpdateAccountWithSameEmail() {
         Passenger passenger = new Passenger("Mohamed", "Seif", "+1234567890", "testuser54@example.com", "password123", 30);
-        String result = passenger.updateAccount("testuser54@example.com", "testuser54@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
+        String result = passenger.updateAccount("testuser54@example.com", 
+        "testuser54@example.com", "newpassword123", "newpassword123", "+12345678901", "31");
         assertEquals("New email cannot be the same as the old email!", result);
     }
 

@@ -22,11 +22,8 @@ public class BookingsModelTest {
 
     @BeforeAll
     void setUpAll() throws Exception {
-        // Connect the model
         BookingsModel.connectToDatabase();
-
         try (Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
-            // Seed passenger
             try (PreparedStatement ps = conn.prepareStatement(
                 "INSERT IGNORE INTO passenger (email, firstName, lastName, phone, password, age) " +
                 "VALUES (?, ?, ?, ?, ?, ?)")) {
@@ -38,8 +35,6 @@ public class BookingsModelTest {
                 ps.setInt(6, 21);
                 ps.executeUpdate();
             }
-
-            // Seed flight
             String[][] flights = {
                 {"FL123","100","Cairo","London","2025-04-14 10:00:00","2025-04-14 16:00:00","200.0"},
                 {"FL456","100","Cairo","London","2025-04-14 10:00:00","2025-04-14 16:00:00","150.0"},
@@ -95,15 +90,44 @@ public class BookingsModelTest {
     }
 
     @AfterAll
-    void tearDownAll() {
+    void cleanUp() throws SQLException {   
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM seat WHERE flightNumber IN (?, ?, ?, ?, ?, ?)")) {
+                ps.setString(1, "FL123");
+                ps.setString(2, "FL456");
+                ps.setString(3, "FL200");
+                ps.setString(4, "FL300");
+                ps.setString(5, "FL400");
+                ps.setString(6, "FL500");
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM flight WHERE flightNumber IN (?, ?, ?, ?, ?, ?)")) {
+                ps.setString(1, "FL123");
+                ps.setString(2, "FL456");
+                ps.setString(3, "FL200");
+                ps.setString(4, "FL300");
+                ps.setString(5, "FL400");
+                ps.setString(6, "FL500");
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM passenger WHERE email = ?")) {
+                ps.setString(1, "jana@example.com");
+                ps.executeUpdate();
+            }
+        }
         userModelStatic.close();
         flightModelStatic.close();
         seatModelStatic.close();
+        BookingsModel.closeConnection();
     }
 
     @Test
     void testAddAndRetrieveBooking() throws Exception {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", 
+        "jana@example.com", "pass123", 21);
         int bookingId = BookingsModel.addBooking("FL123", passenger, "1A");
         assertTrue(bookingId > 0, "Booking ID should be generated and positive");
 
@@ -120,22 +144,21 @@ public class BookingsModelTest {
             }
         }
     }
-
     @Test
     void testGetBookingSeatAndFlight() {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", 
+        "pass123", 21);
         int id = BookingsModel.addBooking("FL456", passenger, "2B");
         assertTrue(id > 0);
-
         seatModelStatic.when(() -> SeatModel.getSeatType("2B", "FL456")).thenReturn("Economy");
         flightModelStatic.when(() -> FlightsModel.getFlightDetails("FL456"))
-                          .thenReturn(new Flight("FL456", 100, "Cairo", "London", "2025-04-14T10:00:00", "2025-04-14T16:00:00", 150.0));
+                          .thenReturn(new Flight("FL456", 100, "Cairo", "London",
+                           "2025-04-14T10:00:00", "2025-04-14T16:00:00", 150.0));
 
         Seat seat = BookingsModel.getBookingSeat(id);
         assertNotNull(seat);
         assertEquals("2B", seat.getSeat_id());
         assertEquals("Economy", seat.getSeatType());
-
         Flight flight = BookingsModel.getBookingFlight(id);
         assertNotNull(flight);
         assertEquals("FL456", flight.getFlightNumber());
@@ -143,7 +166,8 @@ public class BookingsModelTest {
 
     @Test
     void testUpdateStatusAndGetAllBookings() {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", 
+        "jana@example.com", "pass123", 21);
         int id1 = BookingsModel.addBooking("FL200", passenger, "3C");
         int id2 = BookingsModel.addBooking("FL200", passenger, "4D");
         assertTrue(id1 > 0 && id2 > 0);
@@ -151,7 +175,8 @@ public class BookingsModelTest {
 
         userModelStatic.when(() -> UserModel.getPassengerDetails("jana@example.com")).thenReturn(passenger);
         flightModelStatic.when(() -> FlightsModel.getFlightDetails("FL200"))
-                          .thenReturn(new Flight("FL200", 200, "NYC", "LA", "2025-05-01T08:00:00", "2025-05-01T11:00:00", 300.0));
+                          .thenReturn(new Flight("FL200", 200, "NYC", "LA", 
+                          "2025-05-01T08:00:00", "2025-05-01T11:00:00", 300.0));
         seatModelStatic.when(() -> SeatModel.getSeatType("3C", "FL200")).thenReturn("Business");
 
         ArrayList<Booking> list = BookingsModel.getAllBookings("jana@example.com");
@@ -160,10 +185,10 @@ public class BookingsModelTest {
         assertEquals(id1, b.getBookingID());
         assertEquals("Business", b.getSeat().getSeatType());
     }
-
     @Test
     void testDeleteBooking() throws Exception {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", 
+        "pass123", 21);
         int id = BookingsModel.addBooking("FL300", passenger, "5E");
         assertTrue(id > 0);
 
@@ -181,7 +206,8 @@ public class BookingsModelTest {
 
     @Test
     void testDeleteNotConfirmedBookings() throws Exception {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", 
+        "jana@example.com", "pass123", 21);
         int id1 = BookingsModel.addBooking("FL400", passenger, "6F");
         int id2 = BookingsModel.addBooking("FL400", passenger, "7G");
         assertTrue(id1 > 0 && id2 > 0);
@@ -207,7 +233,8 @@ public class BookingsModelTest {
 
     @Test
     void testGetAllBookingsForFlightNumber() {
-        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", "jana@example.com", "pass123", 21);
+        Passenger passenger = new Passenger("Jana", "Hany", "0123456789", 
+        "jana@example.com", "pass123", 21);
         int id1 = BookingsModel.addBooking("FL500", passenger, "8H");
         int id2 = BookingsModel.addBooking("FL500", passenger, "9I");
         assertTrue(id1 > 0 && id2 > 0);
@@ -216,11 +243,13 @@ public class BookingsModelTest {
 
         userModelStatic.when(() -> UserModel.getPassengerDetails("jana@example.com")).thenReturn(passenger);
         flightModelStatic.when(() -> FlightsModel.getFlightDetails("FL500"))
-                          .thenReturn(new Flight("FL500", 180, "Tokyo", "Seoul", "2025-08-20T14:00:00", "2025-08-20T16:30:00", 220.0));
+                          .thenReturn(new Flight("FL500", 180, "Tokyo",
+                           "Seoul", "2025-08-20T14:00:00", "2025-08-20T16:30:00", 220.0));
         seatModelStatic.when(() -> SeatModel.getSeatType("9I", "FL500")).thenReturn("FirstClass");
 
         ArrayList<Booking> list = BookingsModel.getAllBookingsForFlightNumber("FL500");
         assertEquals(1, list.size());
         assertEquals(id2, list.get(0).getBookingID());
     }
+    
 }

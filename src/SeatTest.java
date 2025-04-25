@@ -10,7 +10,6 @@ public class SeatTest {
         assertFalse(seat.isAvailable(),"Default avaliability should be false");
         assertNull(seat.getSeatType(),"Default seatType should be null");
     }
-
     @Test
     public void oneArgCons_IdAndAvaliability(){
         Seat seat = new Seat("1A");
@@ -18,7 +17,6 @@ public class SeatTest {
         assertTrue(seat.isAvailable(),"setting seat_id should default set avaliable to true");
         assertNull(seat.getSeatType(),"seatType should still be null");
     }
-
     @Test
     public void allArgCons_testall(){
         Seat seat = new Seat("2B", false, "Economy");
@@ -26,21 +24,16 @@ public class SeatTest {
         assertFalse(seat.isAvailable());
         assertEquals("Economy", seat.getSeatType());
     }
-
     @Test
     public void testGettersAndSetters(){
         Seat seat = new Seat();
         seat.setSeat_id("3C");
         assertEquals("3C", seat.getSeat_id());
-
         seat.setAvailable(true);
         assertTrue(seat.isAvailable());
-
         seat.setSeatType("Business");
         assertEquals("Business", seat.getSeatType());
-
         seat.setAvailable(false);
         assertFalse(seat.isAvailable());
-
     }
 }

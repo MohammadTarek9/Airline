@@ -7,12 +7,10 @@ public class PaymentTest {
     public void testValidVisaCardWithValidCCV() {
         assertTrue(Payment.processPayment("4123456789012345", 123));
     }
-
     @Test
     public void testValidMasterCardWithValidCCV() {
         assertTrue(Payment.processPayment("5123456789012345", 4567));
     }
-
     @Test
     public void testInvalidCardNumber_TooShort() {
         assertFalse(Payment.processPayment("41234567", 123));

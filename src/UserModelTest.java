@@ -21,7 +21,6 @@ public class UserModelTest {
 
         }
     }
-
     @BeforeEach
     void cleanBeforeEach() throws SQLException{
         try(Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -35,7 +34,8 @@ public class UserModelTest {
     @Test
     void testStoreUserAndEmailExists(){
         assertFalse(UserModel.isEmailExists(testEmail));
-        UserModel.storeUserData(testEmail, "password999", "Jana", "Hany", "+20123456789", 21);
+        UserModel.storeUserData(testEmail, "password999", 
+        "Jana", "Hany", "+20123456789", 21);
         assertTrue(UserModel.isEmailExists(testEmail));
     }
 

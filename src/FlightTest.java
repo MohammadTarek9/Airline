@@ -226,6 +226,12 @@ public class FlightTest {
         String result = flight.delayFlight(pastTime, "2030-01-01 14:00:00", "Maintenance");
         assertEquals("New departure time cannot be earlier than the current time.", result);
     }
+    @Test
+    public void testDelayFlight_NewArivalBeforeCurrentTime() {
+        String pastTime = LocalDateTime.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String result = flight.delayFlight(pastTime, "2030-01-01 14:00:00", "Maintenance");
+        assertEquals("New departure time cannot be earlier than the current time.", result);
+    }
 
     @Test
     public void testDelayFlight_ArrivalBeforeCurrentTime() {
@@ -259,4 +265,58 @@ public class FlightTest {
             fm.verify(() -> FlightsModel.delayFlight("FL123", "Maintenance", "2030-01-01 12:00:00", "2030-01-01 16:00:00"), Mockito.times(1));
         }
     }
+
+    @Test
+    public void testDisplayFlightDetails(){
+        flight = new Flight();
+        flight.displayFlightDetails();
+    }
+
+    // FOR WHITE BOX TESTING PURPOSE
+    @Test
+    public void white_box_testing_1(){
+        flight = new Flight();
+        assertNotNull(flight);
+    }
+
+    @Test
+    public void testingTimeFormat(){
+
+    String validDeparture = "2025-04-22 14:00:00"; // correct format
+    String invalidArrival = "2025/04/22 18:00";   // wrong format
+
+    String result = flight.delayFlight(validDeparture, invalidArrival, "Test");
+    assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", result);
+
+    String invalidDeparture = "2025/04/22 14:00"; // wrong format
+    String validArrival = "2025-04-22 18:00:00";   // correct format
+
+    result = flight.delayFlight(invalidDeparture, validArrival, "Test");
+    assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", result);
+
+    invalidDeparture = "2025/04/22 14:00"; // wrong format
+    invalidArrival = "2025/04/22 18:00";   // wrong format
+    
+    result = flight.delayFlight(invalidDeparture, invalidArrival, "Test");
+    assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", result);
+
+    validDeparture = "2025-04-22 14:00:00"; // correct format
+    validArrival = "2025-04-22 18:00:00";   // correct format
+        
+    result = flight.delayFlight(validDeparture, validArrival, "Test");
+    assertNotEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", result);
+    }
+
+    @Test
+    public void testingDelayTimes(){
+        String result = flight.delayFlight("2030-01-01 10:00:00", "2030-01-01 14:00:00", "Test"); // same departure and arrival times
+        assertEquals("New departure and arrival times cannot be the same as the current times.", result);
+
+        result = flight.delayFlight("2030-01-01 10:00:00", "2030-01-01 17:00:00", "Test"); // same departure time but diferent arrival time
+        assertEquals("New departure and arrival times cannot be the same as the current times.", result);
+
+        result = flight.delayFlight("2030-01-01 12:00:00", "2030-01-01 14:00:00", "Test"); // different departure time but same arrival time
+        assertEquals("New departure and arrival times cannot be the same as the current times.", result);
+    }
+
 }

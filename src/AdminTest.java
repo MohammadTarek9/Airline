@@ -22,7 +22,7 @@ public class AdminTest {
     public static void cleanup() {
         // Clean up
         try (Statement stmt = FlightsModel.getConnection().createStatement()) {
-            stmt.execute("DELETE FROM flight WHERE flightNumber = 'EG101'");
+            stmt.execute("DELETE FROM flight WHERE flightNumber in ('EG101', 'DUPLICATE101')");
             FlightsModel.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class AdminTest {
     }
 
     @Test
-    public void testInvalidAddFlight() {
+    public void testFields() {
         Flight flight = new Flight("", 0, "", "", "", "", 0);
 
         //test Empty Fields
@@ -123,4 +123,57 @@ public class AdminTest {
 
     }
 
+    @Test
+    public void testInvalidAddFlight() {
+    // Create a flight with valid values
+    Flight flight = new Flight("DUPLICATE101", 100, "Cairo", "Dubai", "2025-12-10 10:00:00", "2025-12-10 15:00:00", 500);
+
+    assertEquals("success", admin.addFlight(flight));
+
+    // Add it again with the same flight number - assuming duplicate is rejected by the model
+    assertEquals("Error adding flight", admin.addFlight(flight));
+    }
+
+    
+    @Test
+    public void testInvalidTimes(){
+        Flight flight_1 = new Flight("EG101", -150, "Cairo", "London", "2023-12-31 12:00:00", "2023/12/31 17:00:00", 1000);
+        assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", admin.addFlight(flight_1));
+
+        Flight flight_2 = new Flight("EG101", -150, "Cairo", "London", "2023/12/31 12:00:00", "2023-12-31 17:00:00", 1000);
+        assertEquals("Please enter the date and time in the format yyyy-mm-dd hh:mm:ss.", admin.addFlight(flight_2));
+
+    }
+
+    @Test
+    public void testIndividualEmptyFields() {
+        // Empty flight number
+        Flight flight1 = new Flight("", 150, "Cairo", "London", "2025-12-01 12:00:00", "2025-12-01 17:00:00", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight1));
+
+        // Empty source
+        Flight flight2 = new Flight("EG102", 150, "", "London", "2025-12-01 12:00:00", "2025-12-01 17:00:00", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight2));
+
+        // Empty destination
+        Flight flight3 = new Flight("EG103", 150, "Cairo", "", "2025-12-01 12:00:00", "2025-12-01 17:00:00", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight3));
+
+        // Empty departure time
+        Flight flight4 = new Flight("EG104", 150, "Cairo", "London", "", "2025-12-01 17:00:00", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight4));
+
+        // Empty arrival time
+        Flight flight5 = new Flight("EG105", 150, "Cairo", "London", "2025-12-01 12:00:00", "", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight5));
+
+        // Capacity is 0
+        Flight flight6 = new Flight("EG106", 0, "Cairo", "London", "2025-12-01 12:00:00", "2025-12-01 17:00:00", 500);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight6));
+
+        // Base fare is 0
+        Flight flight7 = new Flight("EG107", 150, "Cairo", "London", "2025-12-01 12:00:00", "2025-12-01 17:00:00", 0);
+        assertEquals("Please fill in all fields correctly.", admin.addFlight(flight7));
+    }
+    
 }

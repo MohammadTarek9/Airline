@@ -209,4 +209,5 @@ public class FlightModelTest {
         Flight flightAfter = FlightsModel.getFlightDetails("TEST123");
         assertEquals(initialBookedSeats + 1, flightAfter.getBookedSeats());
     }
+    
 }
